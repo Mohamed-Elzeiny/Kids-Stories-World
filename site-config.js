@@ -1,5 +1,12 @@
 /* Shared site settings loader and safe theme applier for the public pages. */
 (function () {
+  var PALETTES = {
+    storybook: { label: "paletteStorybook", colors: { primary: "#7252a0", secondary: "#ef816c", background: "#fffaf2", text: "#303048", button: "#7252a0", card: "#ffffff" } },
+    ocean: { label: "paletteOcean", colors: { primary: "#247a9b", secondary: "#e99a67", background: "#f2fbfd", text: "#263a45", button: "#247a9b", card: "#ffffff" } },
+    meadow: { label: "paletteMeadow", colors: { primary: "#438568", secondary: "#dfa943", background: "#f7fbf1", text: "#2d3d32", button: "#438568", card: "#ffffff" } },
+    berry: { label: "paletteBerry", colors: { primary: "#a94f78", secondary: "#ed947f", background: "#fff6f8", text: "#46333c", button: "#a94f78", card: "#ffffff" } },
+    sunrise: { label: "paletteSunrise", colors: { primary: "#b96d38", secondary: "#6ea99a", background: "#fff8ed", text: "#3c352d", button: "#a85d2d", card: "#ffffff" } }
+  };
   var DEFAULTS = {
     siteName: { ar: "مكتبة الحكايات", en: "Story Library" },
     texts: {
@@ -20,7 +27,7 @@
     theme: {
       primary: "#7252a0", secondary: "#ef816c", background: "#fffaf2",
       text: "#303048", button: "#7252a0", card: "#ffffff",
-      font: "cairo", headingSize: "medium", bodySize: "medium"
+      palette: "storybook", font: "cairo", headingSize: "medium", bodySize: "medium"
     }
   };
 
@@ -52,6 +59,16 @@
     ["primary", "secondary", "background", "text", "button", "card"].forEach(function (key) {
       result.theme[key] = color(theme[key], DEFAULTS.theme[key]);
     });
+    var paletteId = Object.prototype.hasOwnProperty.call(PALETTES, theme.palette) ? theme.palette : "";
+    if (!paletteId) {
+      Object.keys(PALETTES).some(function (id) {
+        var colors = PALETTES[id].colors;
+        var matches = Object.keys(colors).every(function (key) { return result.theme[key] === colors[key]; });
+        if (matches) paletteId = id;
+        return matches;
+      });
+    }
+    result.theme.palette = paletteId || "custom";
     result.theme.font = ["cairo", "system", "serif"].indexOf(theme.font) >= 0 ? theme.font : DEFAULTS.theme.font;
     result.theme.headingSize = ["small", "medium", "large"].indexOf(theme.headingSize) >= 0 ? theme.headingSize : DEFAULTS.theme.headingSize;
     result.theme.bodySize = ["small", "medium", "large"].indexOf(theme.bodySize) >= 0 ? theme.bodySize : DEFAULTS.theme.bodySize;
@@ -106,5 +123,5 @@
       return response.json();
     }).then(normalize).catch(function () { return clone(DEFAULTS); });
   }
-  window.SiteConfig = { defaults: function () { return clone(DEFAULTS); }, normalize: normalize, clone: clone, apply: apply, load: load };
+  window.SiteConfig = { defaults: function () { return clone(DEFAULTS); }, normalize: normalize, clone: clone, apply: apply, load: load, palettes: function () { return clone(PALETTES); } };
 })();

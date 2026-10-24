@@ -58,6 +58,7 @@
     "text": "#303048",
     "button": "#7252a0",
     "card": "#ffffff",
+    "palette": "storybook",
     "font": "cairo",
     "headingSize": "medium",
     "bodySize": "medium"

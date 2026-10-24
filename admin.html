@@ -105,14 +105,8 @@
             </div><ul class="manage quote-list" id="quote-list"></ul>
           </fieldset>
           <fieldset class="settings-group"><legend data-i18n="settingsAppearance">الألوان والخطوط</legend>
-            <div class="settings-colors">
-              <div class="color-control"><label for="setting-color-primary" data-i18n="colorPrimary">اللون الأساسي</label><input id="setting-color-primary" type="color"><output id="value-color-primary"></output></div>
-              <div class="color-control"><label for="setting-color-secondary" data-i18n="colorSecondary">اللون الثانوي</label><input id="setting-color-secondary" type="color"><output id="value-color-secondary"></output></div>
-              <div class="color-control"><label for="setting-color-background" data-i18n="colorBackground">لون الخلفية</label><input id="setting-color-background" type="color"><output id="value-color-background"></output></div>
-              <div class="color-control"><label for="setting-color-text" data-i18n="colorText">لون النص</label><input id="setting-color-text" type="color"><output id="value-color-text"></output></div>
-              <div class="color-control"><label for="setting-color-button" data-i18n="colorButton">لون الأزرار</label><input id="setting-color-button" type="color"><output id="value-color-button"></output></div>
-              <div class="color-control"><label for="setting-color-card" data-i18n="colorCard">لون البطاقات</label><input id="setting-color-card" type="color"><output id="value-color-card"></output></div>
-            </div>
+            <p class="note" data-i18n="paletteNote">اختر ستايل ألوان متناسقًا لتطبيقه على الموقع بالكامل.</p>
+            <div class="palette-options" id="palette-options" role="radiogroup" data-i18n-aria="paletteLabel" aria-label="أنماط الألوان"></div>
             <div class="settings-fields"><div class="field"><label for="setting-font" data-i18n="settingFont">نوع الخط</label><select id="setting-font"><option value="cairo" data-i18n="fontCairo">القاهرة / Cairo</option><option value="system" data-i18n="fontSystem">خط النظام</option><option value="serif" data-i18n="fontSerif">خط كلاسيكي</option></select></div>
               <div class="field"><label for="setting-heading-size" data-i18n="headingSize">حجم العناوين</label><select id="setting-heading-size"><option value="small" data-i18n="sizeSmall">صغير</option><option value="medium" data-i18n="sizeMedium">متوسط</option><option value="large" data-i18n="sizeLarge">كبير</option></select></div>
               <div class="field"><label for="setting-body-size" data-i18n="bodySize">حجم النصوص</label><select id="setting-body-size"><option value="small" data-i18n="sizeSmall">صغير</option><option value="medium" data-i18n="sizeMedium">متوسط</option><option value="large" data-i18n="sizeLarge">كبير</option></select></div></div>
@@ -366,7 +360,7 @@
 
   /* ---------- إعدادات الموقع ---------- */
   var textKeys = ["eyebrow", "heroTitle", "heroSubtitle", "welcomeText", "browse", "sectionKicker", "shelfTitle", "sectionIntro", "aboutTitle", "aboutText", "footer"];
-  var colorKeys = ["primary", "secondary", "background", "text", "button", "card"];
+  var paletteDefinitions = SiteConfig.palettes();
   function putPair(root, key, language, value) { root[key][language] = value; }
   function readSettingsForm() {
     siteSettings.siteName.ar = $("setting-name-ar").value;
@@ -375,7 +369,6 @@
       putPair(siteSettings.texts, key, "ar", $("setting-" + key + "-ar").value);
       putPair(siteSettings.texts, key, "en", $("setting-" + key + "-en").value);
     });
-    colorKeys.forEach(function (key) { siteSettings.theme[key] = $("setting-color-" + key).value; });
     siteSettings.theme.font = $("setting-font").value;
     siteSettings.theme.headingSize = $("setting-heading-size").value;
     siteSettings.theme.bodySize = $("setting-body-size").value;
@@ -393,7 +386,6 @@
     preview.style.setProperty("--font-display", siteSettings.theme.font === "serif" ? 'Georgia, "Times New Roman", Tahoma, serif' : siteSettings.theme.font === "system" ? '"Trebuchet MS", Tahoma, Arial, sans-serif' : (I18N.lang === "en" ? '"Fredoka", "Cairo", "Segoe UI", Tahoma, sans-serif' : '"Cairo", "Segoe UI", Tahoma, sans-serif'));
     preview.style.setProperty("--heading-scale", { small: "0.9", medium: "1", large: "1.12" }[siteSettings.theme.headingSize]);
     preview.style.setProperty("--body-scale", { small: "0.9", medium: "1", large: "1.1" }[siteSettings.theme.bodySize]);
-    colorKeys.forEach(function (key) { $("value-color-" + key).value = siteSettings.theme[key]; $("value-color-" + key).textContent = siteSettings.theme[key]; });
     var lang = I18N.lang;
     $("settings-preview-name").textContent = siteSettings.siteName[lang] || siteSettings.siteName[lang === "en" ? "ar" : "en"];
     $("settings-preview-title").textContent = siteSettings.texts.heroTitle[lang] || siteSettings.texts.heroTitle[lang === "en" ? "ar" : "en"];
@@ -408,11 +400,27 @@
       $("setting-" + key + "-ar").value = siteSettings.texts[key].ar;
       $("setting-" + key + "-en").value = siteSettings.texts[key].en;
     });
-    colorKeys.forEach(function (key) { $("setting-color-" + key).value = siteSettings.theme[key]; });
+    renderPalettes();
     $("setting-font").value = siteSettings.theme.font;
     $("setting-heading-size").value = siteSettings.theme.headingSize;
     $("setting-body-size").value = siteSettings.theme.bodySize;
     renderQuotes(); previewSettings();
+  }
+  function renderPalettes() {
+    var container = $("palette-options"); container.textContent = "";
+    if (siteSettings.theme.palette === "custom") container.appendChild(h("p", { class: "palette-legacy-note", text: T("paletteCustomNotice") }));
+    Object.keys(paletteDefinitions).forEach(function (id) {
+      var palette = paletteDefinitions[id];
+      var radio = h("input", { type: "radio", name: "site-palette", value: id });
+      radio.checked = siteSettings.theme.palette === id;
+      var swatches = h("span", { class: "palette-swatches", "aria-hidden": "true" });
+      ["primary", "secondary", "background", "button"].forEach(function (key) {
+        var swatch = h("span", { class: "palette-swatch" });
+        swatch.style.backgroundColor = palette.colors[key];
+        swatches.appendChild(swatch);
+      });
+      container.appendChild(h("label", { class: "palette-option" + (radio.checked ? " selected" : "") }, [radio, h("span", { class: "palette-title", text: T(palette.label) }), swatches]));
+    });
   }
   function quoteText(quote) { return quote.text[I18N.lang] || quote.text[I18N.lang === "en" ? "ar" : "en"]; }
   function renderQuotes() {
@@ -464,6 +472,14 @@
   });
   $("site-settings-form").addEventListener("change", function (event) {
     if (event.target.closest(".quote-editor")) return;
+    if (event.target.name === "site-palette") {
+      var selectedPalette = paletteDefinitions[event.target.value];
+      if (selectedPalette) {
+        siteSettings.theme.palette = event.target.value;
+        Object.keys(selectedPalette.colors).forEach(function (key) { siteSettings.theme[key] = selectedPalette.colors[key]; });
+        renderPalettes();
+      }
+    }
     previewSettings(); say("settings-status", T("settingsUnsaved"));
   });
   $("site-settings-form").addEventListener("submit", function (event) {
@@ -637,7 +653,7 @@
     }).then(function () { busy = false; });
   }
 
-  I18N.on(function () { showLock(); renderList(); renderQuotes(); previewSettings(); $("quote-save").textContent = T(editingQuoteId ? "quoteUpdate" : "quoteAdd"); });
+  I18N.on(function () { showLock(); renderList(); renderQuotes(); renderPalettes(); previewSettings(); $("quote-save").textContent = T(editingQuoteId ? "quoteUpdate" : "quoteAdd"); });
   showLock();
 })();
 </script>
