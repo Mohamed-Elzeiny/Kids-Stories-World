@@ -67,8 +67,8 @@
       mDone: "تمت إضافة الكتاب. سيظهر في الموقع بعد نحو دقيقة، عندما ينتهي ⁦GitHub Pages⁩ من التحديث.",
       mDeleted: "تم حذف الكتاب.",
       e401: "المفتاح غير صحيح أو انتهت صلاحيته.",
-      e403: "المفتاح لا يملك صلاحية الكتابة على هذا المستودع.",
-      e404: "لم أجد المستودع أو الفرع. راجع اسم المستخدم والمستودع والمفتاح.",
+      e403: "رفض GitHub الطلب. تحقق من صلاحيات المفتاح أو حدود الطلبات. تفاصيل GitHub:",
+      e404: "لم يتم العثور على مسار الملف المطلوب. تفاصيل GitHub:",
       e409: "تعارض أثناء الحفظ. أعد المحاولة.",
       eNet: "تعذّر الاتصال بـ GitHub. تأكد من الإنترنت وأعد المحاولة.",
       eOther: "حدث خطأ غير متوقع. أعد المحاولة."
@@ -139,8 +139,8 @@
       mDone: "Book added. It will show on the site in about a minute, once GitHub Pages finishes updating.",
       mDeleted: "Book deleted.",
       e401: "The token is wrong or has expired.",
-      e403: "The token does not have write access to this repository.",
-      e404: "Repository or branch not found. Check the username, repository and token.",
+      e403: "GitHub refused the request. Check token permissions or rate limits. GitHub details:",
+      e404: "The requested file path was not found. GitHub details:",
       e409: "Conflict while saving. Try again.",
       eNet: "Could not reach GitHub. Check your internet and try again.",
       eOther: "Something unexpected went wrong. Try again."
@@ -246,6 +246,25 @@
     settingsQuotes: "Quotes", quoteNote: "Add your own quotes in both languages and choose which one appears on the homepage.", quoteTextAr: "Quote (Arabic)", quoteTextEn: "Quote (English)", quoteAuthorAr: "Quote author (optional, Arabic)", quoteAuthorEn: "Quote author (optional, English)", quoteAdd: "Add quote", quoteUpdate: "Save quote", quoteCancel: "Cancel edit", quoteEmpty: "No quotes have been added.", quoteFeature: "Show on homepage", quoteEdit: "Edit", quoteDelete: "Delete", quoteNeedText: "Enter the quote in Arabic or English first.",
     settingsAppearance: "Color styles and fonts", paletteNote: "Choose a coordinated color style to apply across the site.", paletteLabel: "Color styles", paletteCustomNotice: "The saved colors do not match a preset. Choose a style to apply a coordinated palette.", paletteStorybook: "Purple Storybook", paletteOcean: "Ocean Breeze", paletteMeadow: "Green Meadow", paletteBerry: "Berry Blossoms", paletteSunrise: "Warm Sunrise", settingFont: "Font family", fontCairo: "Cairo", fontSystem: "System font", fontSerif: "Classic serif", headingSize: "Heading size", bodySize: "Body text size", sizeSmall: "Small", sizeMedium: "Medium", sizeLarge: "Large", settingsPreview: "Live preview", previewCopy: "Colors and fonts preview here while you edit.",
     saveSettings: "Save settings", cancelSettings: "Cancel changes", settingsLoading: "Loading site settings…", settingsLoaded: "Saved settings loaded.", settingsNotFound: "No settings file exists yet. Defaults are shown; save to create the file.", settingsLoadError: "Could not load site settings from GitHub. Saving is disabled until the connection is restored.", settingsUnsaved: "You have unsaved changes.", settingsSaving: "Saving settings to GitHub…", settingsSaveSuccess: "Settings saved to GitHub.", settingsSaveFailure: "Settings were not saved to GitHub: "
+  });
+
+  Object.assign(D.ar, {
+    lReconfigure: "تغيير مستودع GitHub", reconfigureTitle: "تحديث اتصال GitHub", reconfigureNote: "أدخل كلمة مرور الإدارة للتحقق من الحساب، ثم حدّث بيانات المستودع ومفتاح الوصول.",
+    lReconfigureSubmit: "التحقق وحفظ الاتصال", reconfigurePrompt: "أدخل بيانات المستودع ومفتاح الوصول الجديد، ثم اضغط زر التحقق.",
+    eRepoMissing: "لم يتم العثور على المستودع بهذا الاسم أو لا يمكن الوصول إليه بهذا المفتاح.",
+    eBranchMissing: "تم العثور على المستودع، لكن الفرع المحدد غير موجود أو لا يمكن الوصول إليه.",
+    eContentsMissing: "المستودع والفرع موجودان، لكن تعذرت قراءة books.json. تحقق من وجود الملف وصلاحية Contents للقراءة. تفاصيل GitHub:",
+    eWrite404: "لم يقبل GitHub تحديث الملف. تحقق من صلاحية Contents للمفتاح ومسار الملف والفرع. تفاصيل GitHub:",
+    eVault: "تعذر حفظ بيانات الاتصال في هذا المتصفح. تحقق من مساحة التخزين المتاحة وإعدادات الخصوصية."
+  });
+  Object.assign(D.en, {
+    lReconfigure: "Change GitHub repository", reconfigureTitle: "Update GitHub connection", reconfigureNote: "Enter your admin password to verify this account, then update the repository details and access token.",
+    lReconfigureSubmit: "Verify and save connection", reconfigurePrompt: "Enter the repository details and new access token, then verify the connection.",
+    eRepoMissing: "The repository was not found under this name or cannot be accessed with this token.",
+    eBranchMissing: "The repository was found, but the selected branch is missing or inaccessible.",
+    eContentsMissing: "The repository and branch exist, but books.json could not be read. Check that the file exists and the token has Contents read permission. GitHub details:",
+    eWrite404: "GitHub rejected the file update. Check the token's Contents permission, file path and branch. GitHub details:",
+    eVault: "The connection could not be saved in this browser. Check available storage and privacy settings."
   });
 
   var KEY = "stories-lang";

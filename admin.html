@@ -48,11 +48,11 @@
         </div>
         <div class="field setup-only">
           <label for="c-owner" data-i18n="cOwner">اسم المستخدم على GitHub</label>
-          <input type="text" id="c-owner" dir="ltr" autocomplete="off" placeholder="username">
+          <input type="text" id="c-owner" dir="ltr" autocomplete="off" value="Mohamed-Elzeiny" placeholder="username">
         </div>
         <div class="field setup-only">
           <label for="c-repo" data-i18n="cRepo">اسم المستودع</label>
-          <input type="text" id="c-repo" dir="ltr" autocomplete="off" placeholder="stories-site">
+          <input type="text" id="c-repo" dir="ltr" autocomplete="off" value="Kids-Stories-World" placeholder="repository">
         </div>
         <div class="field setup-only">
           <label for="c-branch" data-i18n="cBranch">الفرع</label>
@@ -64,6 +64,7 @@
         </div>
         <div class="form-foot">
           <button class="btn" type="submit" id="l-submit"></button>
+          <button class="btn small" type="button" id="l-reconfigure" data-i18n="lReconfigure" hidden>تغيير مستودع GitHub</button>
           <button class="btn small danger" type="button" id="l-reset" data-i18n="lReset">نسيت كلمة المرور أو أريد البدء من جديد</button>
           <p class="status" id="l-status" role="status" aria-live="polite"></p>
         </div>
@@ -194,6 +195,7 @@
   var armed = null;
   var busy = false;
   var resetArmed = false;
+  var reconfigureArmed = false;
   var siteSettings = SiteConfig.defaults();
   var savedSiteSettings = SiteConfig.defaults();
   var siteSettingsSha = null;
@@ -252,12 +254,13 @@
   /* ---------- شاشة الدخول ---------- */
   function showLock() {
     var hasVault = !!getVault();
-    $("lock-title").textContent = T(hasVault ? "loginTitle" : "setupTitle");
-    $("lock-note").textContent = T(hasVault ? "loginNote" : "setupNote");
-    $("l-submit").textContent = T(hasVault ? "lLoginBtn" : "lSetupBtn");
+    $("lock-title").textContent = T(reconfigureArmed ? "reconfigureTitle" : hasVault ? "loginTitle" : "setupTitle");
+    $("lock-note").textContent = T(reconfigureArmed ? "reconfigureNote" : hasVault ? "loginNote" : "setupNote");
+    $("l-submit").textContent = T(reconfigureArmed ? "lReconfigureSubmit" : hasVault ? "lLoginBtn" : "lSetupBtn");
     $("l-pass-label").textContent = T(hasVault ? "lPass" : "lPassNew");
     $("l-pass").setAttribute("autocomplete", hasVault ? "current-password" : "new-password");
-    document.querySelectorAll(".setup-only").forEach(function (n) { n.hidden = hasVault; });
+    document.querySelectorAll(".setup-only").forEach(function (n) { n.hidden = hasVault && !reconfigureArmed; });
+    $("l-reconfigure").hidden = !hasVault;
     $("l-reset").hidden = !hasVault;
     $("l-reset").textContent = T(resetArmed ? "lResetConfirm" : "lReset");
     $("lock-screen").hidden = !!session;
@@ -275,30 +278,52 @@
     busy = true; $("l-submit").disabled = true; say("l-status", "…");
 
     var job;
-    if (vault) {
-      job = unseal(user, pass, vault).catch(function () { var e = new Error("wrong"); e.wrong = true; throw e; });
-    } else {
+    var isReconfigure = !!vault && reconfigureArmed;
+    var isNewSetup = !vault;
+    if (isNewSetup || isReconfigure) {
       var cfg = {
         owner: $("c-owner").value.trim(), repo: $("c-repo").value.trim(),
         branch: $("c-branch").value.trim() || "main", token: $("c-token").value.trim()
       };
-      if (pass.length < 8) { busy = false; $("l-submit").disabled = false; say("l-status", T("ePassShort"), "err"); return; }
+      if (isNewSetup && pass.length < 8) { busy = false; $("l-submit").disabled = false; say("l-status", T("ePassShort"), "err"); return; }
       if (!cfg.owner || !cfg.repo || !cfg.token) { busy = false; $("l-submit").disabled = false; say("l-status", T("mNeedConn"), "err"); return; }
-      job = seal(user, pass, cfg).then(function (v) {
-        try { localStorage.setItem(VAULT, JSON.stringify(v)); } catch (e) {}
-        return cfg;
-      });
+      if (isReconfigure) {
+        job = unseal(user, pass, vault).catch(function () { var e = new Error("wrong"); e.wrong = true; throw e; })
+          .then(function () { return validateConnection(cfg); }).then(function () { return cfg; });
+      } else job = validateConnection(cfg).then(function () { return cfg; });
+    } else {
+      job = unseal(user, pass, vault).catch(function () { var e = new Error("wrong"); e.wrong = true; throw e; })
+        .then(function (cfg) { return validateConnection(cfg).then(function () { return cfg; }); });
     }
     job.then(function (cfg) {
+      if (isNewSetup || isReconfigure) return seal(user, pass, cfg).then(function (v) {
+        try { localStorage.setItem(VAULT, JSON.stringify(v)); } catch (e) { var storageError = new Error("vault"); storageError.vault = true; throw storageError; }
+        return cfg;
+      });
+      return cfg;
+    }).then(function (cfg) {
       session = cfg;
+      reconfigureArmed = false;
       $("l-pass").value = ""; $("c-token").value = "";
       say("l-status", "");
       showLock();
       refresh();
       loadSiteSettings();
     }).catch(function (e) {
-      say("l-status", e && e.wrong ? T("eWrong") : T("eOther"), "err");
+      say("l-status", e && e.wrong ? T("eWrong") : e && e.vault ? T("eVault") : errText(e), "err");
     }).then(function () { busy = false; $("l-submit").disabled = false; });
+  });
+
+  $("l-reconfigure").addEventListener("click", function () {
+    reconfigureArmed = !reconfigureArmed;
+    if (reconfigureArmed) {
+      $("c-owner").value = "Mohamed-Elzeiny";
+      $("c-repo").value = "Kids-Stories-World";
+      $("c-branch").value = "main";
+      $("c-token").value = "";
+    }
+    showLock();
+    say("l-status", reconfigureArmed ? T("reconfigurePrompt") : "");
   });
 
   $("l-reset").addEventListener("click", function () {
@@ -331,17 +356,46 @@
     }).then(function (r) {
       if (r.status === 204) return {};
       return r.json().catch(function () { return {}; }).then(function (j) {
-        if (!r.ok) { var e = new Error(j.message || r.status); e.status = r.status; throw e; }
+        if (!r.ok) { var e = new Error(j.message || r.status); e.status = r.status; e.githubMessage = j.message || ""; e.method = method; e.path = path; throw e; }
         return j;
       });
+    });
+  }
+
+  function validateConnection(cfg) {
+    var base = "https://api.github.com/repos/" + encodeURIComponent(cfg.owner) + "/" + encodeURIComponent(cfg.repo);
+    function check(path, step) {
+      return fetch(base + path, { headers: {
+        "Authorization": "Bearer " + cfg.token,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      } }).then(function (response) {
+        return response.json().catch(function () { return {}; }).then(function (data) {
+          if (!response.ok) {
+            var error = new Error(data.message || response.status);
+            error.status = response.status; error.githubMessage = data.message || ""; error.connectionStep = step;
+            throw error;
+          }
+          return data;
+        });
+      });
+    }
+    return check("", "repo").then(function () {
+      return check("/branches/" + encodeURIComponent(cfg.branch), "branch");
+    }).then(function () {
+      return check("/contents/books.json?ref=" + encodeURIComponent(cfg.branch), "contents");
     });
   }
 
   function errText(e) {
     var s = e && e.status;
     if (s === 401) return T("e401");
-    if (s === 403) return T("e403");
-    if (s === 404) return T("e404");
+    if (s === 403) return T("e403") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 404 && e.connectionStep === "repo") return T("eRepoMissing");
+    if (s === 404 && e.connectionStep === "branch") return T("eBranchMissing");
+    if (s === 404 && e.connectionStep === "contents") return T("eContentsMissing") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 404 && e.method === "PUT") return T("eWrite404") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 404) return T("e404") + (e.githubMessage ? " " + e.githubMessage : "");
     if (s === 409 || s === 422) return T("e409");
     if (!s) return T("eNet");
     return T("eOther") + " (" + s + ")";
