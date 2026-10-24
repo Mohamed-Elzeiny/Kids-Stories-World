@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة رفع الكتب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Fredoka:wght@500;600&family=Lalezar&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<span id="admin-marker" hidden></span>
+
+<header class="topbar">
+  <div class="band-inner">
+    <a class="admin-home-link" href="index.html" data-i18n="homePage">الصفحة الرئيسية</a>
+    <button type="button" id="lang-btn" class="lang-btn" data-i18n="langBtn">English</button>
+  </div>
+</header>
+
+<div class="hero slim">
+  <div class="band-inner">
+    <div class="hero-text">
+      <p class="eyebrow" data-i18n="aEyebrow">خاصة بصاحب الموقع</p>
+      <h1 data-i18n="adminTitle">لوحة رفع الكتب</h1>
+      <p class="lead" data-i18n="aLead">ارفع كتابًا جديدًا أو احذف كتابًا قديمًا.</p>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="band-inner">
+
+    <!-- شاشة الدخول / الإعداد -->
+    <section class="panel" id="lock-screen" aria-labelledby="lock-title">
+      <h2 id="lock-title"></h2>
+      <p class="note" id="lock-note"></p>
+      <form id="lock-form" novalidate autocomplete="off">
+        <div class="field">
+          <label for="l-user" data-i18n="lUser">اسم المستخدم</label>
+          <input type="text" id="l-user" dir="ltr" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="l-pass" id="l-pass-label" data-i18n="lPass">كلمة المرور</label>
+          <input type="password" id="l-pass" dir="ltr" autocomplete="current-password">
+        </div>
+        <div class="field setup-only">
+          <label for="c-owner" data-i18n="cOwner">اسم المستخدم على GitHub</label>
+          <input type="text" id="c-owner" dir="ltr" autocomplete="off" value="Mohamed-Elzeiny" placeholder="username">
+        </div>
+        <div class="field setup-only">
+          <label for="c-repo" data-i18n="cRepo">اسم المستودع</label>
+          <input type="text" id="c-repo" dir="ltr" autocomplete="off" value="Kids-Stories-World" placeholder="repository">
+        </div>
+        <div class="field setup-only">
+          <label for="c-branch" data-i18n="cBranch">الفرع</label>
+          <input type="text" id="c-branch" dir="ltr" autocomplete="off" value="main">
+        </div>
+        <div class="field setup-only">
+          <label for="c-token" data-i18n="cToken">مفتاح الوصول</label>
+          <input type="password" id="c-token" dir="ltr" autocomplete="off" placeholder="github_pat_...">
+        </div>
+        <div class="form-foot">
+          <button class="btn" type="submit" id="l-submit"></button>
+          <button class="btn small" type="button" id="l-reconfigure" data-i18n="lReconfigure" hidden>تغيير مستودع GitHub</button>
+          <button class="btn small danger" type="button" id="l-reset" data-i18n="lReset">نسيت كلمة المرور أو أريد البدء من جديد</button>
+          <p class="status" id="l-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </section>
+
+    <!-- لوحة الإدارة بعد الدخول -->
+    <div id="app-screen" hidden>
+      <section class="panel settings-panel" aria-labelledby="settings-title">
+        <div class="section-head"><h2 id="settings-title" data-i18n="siteSettingsTitle">إعدادات الموقع</h2></div>
+        <p class="note" data-i18n="settingsNote">تُحفظ الإعدادات في site-config.json عبر GitHub عند الضغط على حفظ.</p>
+        <form id="site-settings-form" class="settings-form">
+          <fieldset class="settings-group"><legend data-i18n="settingsIdentity">هوية الموقع</legend>
+            <div class="settings-fields">
+              <div class="field"><label for="setting-name-ar" data-i18n="siteNameAr">اسم الموقع بالعربية</label><input id="setting-name-ar" type="text" maxlength="100"></div>
+              <div class="field"><label for="setting-name-en" data-i18n="siteNameEn">اسم الموقع بالإنجليزية</label><input id="setting-name-en" type="text" dir="ltr" maxlength="100"></div>
+            </div>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsHomeText">نصوص الصفحة الرئيسية</legend>
+            <div class="settings-fields">
+              <div class="field"><label for="setting-eyebrow-ar" data-i18n="settingEyebrow">عبارة ترحيبية قصيرة (عربي)</label><input id="setting-eyebrow-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-eyebrow-en" data-i18n="settingEyebrowEn">Short intro (English)</label><input id="setting-eyebrow-en" type="text" dir="ltr" maxlength="250"></div>
+              <div class="field"><label for="setting-heroTitle-ar" data-i18n="settingHeroTitleAr">العنوان الرئيسي (عربي)</label><input id="setting-heroTitle-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-heroTitle-en" data-i18n="settingHeroTitleEn">Main heading (English)</label><input id="setting-heroTitle-en" type="text" dir="ltr" maxlength="250"></div>
+              <div class="field"><label for="setting-heroSubtitle-ar" data-i18n="settingSubtitleAr">العنوان الفرعي (عربي)</label><textarea id="setting-heroSubtitle-ar" maxlength="1000"></textarea></div><div class="field"><label for="setting-heroSubtitle-en" data-i18n="settingSubtitleEn">Subtitle (English)</label><textarea id="setting-heroSubtitle-en" dir="ltr" maxlength="1000"></textarea></div>
+              <div class="field"><label for="setting-welcomeText-ar" data-i18n="settingWelcomeAr">نص ترحيبي (عربي)</label><input id="setting-welcomeText-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-welcomeText-en" data-i18n="settingWelcomeEn">Welcome text (English)</label><input id="setting-welcomeText-en" type="text" dir="ltr" maxlength="250"></div>
+              <div class="field"><label for="setting-browse-ar" data-i18n="settingBrowseAr">نص زر القصص (عربي)</label><input id="setting-browse-ar" type="text" maxlength="100"></div><div class="field"><label for="setting-browse-en" data-i18n="settingBrowseEn">Stories button (English)</label><input id="setting-browse-en" type="text" dir="ltr" maxlength="100"></div>
+              <div class="field"><label for="setting-sectionKicker-ar" data-i18n="settingKickerAr">عبارة قسم القصص (عربي)</label><input id="setting-sectionKicker-ar" type="text" maxlength="150"></div><div class="field"><label for="setting-sectionKicker-en" data-i18n="settingKickerEn">Stories section label (English)</label><input id="setting-sectionKicker-en" type="text" dir="ltr" maxlength="150"></div>
+              <div class="field"><label for="setting-shelfTitle-ar" data-i18n="settingShelfAr">عنوان قسم القصص (عربي)</label><input id="setting-shelfTitle-ar" type="text" maxlength="150"></div><div class="field"><label for="setting-shelfTitle-en" data-i18n="settingShelfEn">Stories section heading (English)</label><input id="setting-shelfTitle-en" type="text" dir="ltr" maxlength="150"></div>
+              <div class="field"><label for="setting-sectionIntro-ar" data-i18n="settingSectionIntroAr">وصف قسم القصص (عربي)</label><textarea id="setting-sectionIntro-ar" maxlength="500"></textarea></div><div class="field"><label for="setting-sectionIntro-en" data-i18n="settingSectionIntroEn">Stories section description (English)</label><textarea id="setting-sectionIntro-en" dir="ltr" maxlength="500"></textarea></div>
+              <div class="field"><label for="setting-aboutTitle-ar" data-i18n="settingAboutTitleAr">عنوان التعريف (عربي)</label><input id="setting-aboutTitle-ar" type="text" maxlength="150"></div><div class="field"><label for="setting-aboutTitle-en" data-i18n="settingAboutTitleEn">About heading (English)</label><input id="setting-aboutTitle-en" type="text" dir="ltr" maxlength="150"></div>
+              <div class="field"><label for="setting-aboutText-ar" data-i18n="settingAboutTextAr">وصف الموقع (عربي)</label><textarea id="setting-aboutText-ar" maxlength="1500"></textarea></div><div class="field"><label for="setting-aboutText-en" data-i18n="settingAboutTextEn">Site description (English)</label><textarea id="setting-aboutText-en" dir="ltr" maxlength="1500"></textarea></div>
+              <div class="field"><label for="setting-footer-ar" data-i18n="settingFooterAr">نص التذييل (عربي)</label><input id="setting-footer-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-footer-en" data-i18n="settingFooterEn">Footer text (English)</label><input id="setting-footer-en" type="text" dir="ltr" maxlength="250"></div>
+            </div>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsQuotes">الاقتباسات</legend><p class="note" data-i18n="quoteNote">أضف اقتباساتك الخاصة، ثم اختر واحدًا لعرضه.</p>
+            <div class="quote-editor">
+              <div class="field"><label for="quote-text-ar" data-i18n="quoteTextAr">الاقتباس (عربي)</label><textarea id="quote-text-ar" maxlength="500"></textarea></div><div class="field"><label for="quote-text-en" data-i18n="quoteTextEn">Quote (English)</label><textarea id="quote-text-en" dir="ltr" maxlength="500"></textarea></div>
+              <div class="field"><label for="quote-author-ar" data-i18n="quoteAuthorAr">صاحب الاقتباس (اختياري)</label><input id="quote-author-ar" type="text" maxlength="100"></div><div class="field"><label for="quote-author-en" data-i18n="quoteAuthorEn">Quote author (optional)</label><input id="quote-author-en" type="text" dir="ltr" maxlength="100"></div>
+              <div class="form-foot"><button class="btn small" id="quote-save" type="button" data-i18n="quoteAdd">إضافة الاقتباس</button><button class="btn small danger" id="quote-cancel" type="button" data-i18n="quoteCancel">إلغاء التعديل</button></div>
+            </div><ul class="manage quote-list" id="quote-list"></ul>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsAppearance">الألوان والخطوط</legend>
+            <p class="note" data-i18n="paletteNote">اختر ستايل ألوان متناسقًا لتطبيقه على الموقع بالكامل.</p>
+            <div class="palette-options" id="palette-options" role="radiogroup" data-i18n-aria="paletteLabel" aria-label="أنماط الألوان"></div>
+            <div class="settings-fields"><div class="field"><label for="setting-font" data-i18n="settingFont">نوع الخط</label><select id="setting-font"><option value="cairo" data-i18n="fontCairo">القاهرة / Cairo</option><option value="system" data-i18n="fontSystem">خط النظام</option><option value="serif" data-i18n="fontSerif">خط كلاسيكي</option></select></div>
+              <div class="field"><label for="setting-heading-size" data-i18n="headingSize">حجم العناوين</label><select id="setting-heading-size"><option value="small" data-i18n="sizeSmall">صغير</option><option value="medium" data-i18n="sizeMedium">متوسط</option><option value="large" data-i18n="sizeLarge">كبير</option></select></div>
+              <div class="field"><label for="setting-body-size" data-i18n="bodySize">حجم النصوص</label><select id="setting-body-size"><option value="small" data-i18n="sizeSmall">صغير</option><option value="medium" data-i18n="sizeMedium">متوسط</option><option value="large" data-i18n="sizeLarge">كبير</option></select></div></div>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsPreview">معاينة مباشرة</legend><div class="settings-preview" id="settings-preview"><strong id="settings-preview-name"></strong><h3 id="settings-preview-title"></h3><p id="settings-preview-copy"></p><button type="button" class="btn small" id="settings-preview-button" data-i18n="browse">تصفّح الكتب</button></div></fieldset>
+          <div class="form-foot"><button class="btn" id="settings-save" type="submit" data-i18n="saveSettings">حفظ الإعدادات</button><button class="btn small danger" id="settings-cancel" type="button" data-i18n="cancelSettings">إلغاء التعديلات</button><p class="status" id="settings-status" role="status" aria-live="polite"></p></div>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="add-title">
+        <div class="section-head">
+          <h2 id="add-title" data-i18n="addTitle">2. إضافة كتاب جديد</h2>
+          <button class="btn small danger" type="button" id="logout" data-i18n="lLogout">تسجيل الخروج</button>
+        </div>
+        <p class="note" data-i18n="addNote">ملف الكتاب بصيغة PDF.</p>
+        <p class="note" id="conn-info"></p>
+        <form id="book-form" novalidate>
+          <div class="field">
+            <label for="f-title-ar" data-i18n="fTitleAr">عنوان القصة (عربي)</label>
+            <input type="text" id="f-title-ar" maxlength="80" data-i18n-ph="fPhTitleAr" placeholder="">
+          </div>
+          <div class="field">
+            <label for="f-title-en" data-i18n="fTitleEn">عنوان القصة (إنجليزي)</label>
+            <input type="text" id="f-title-en" dir="ltr" maxlength="80" data-i18n-ph="fPhTitleEn" placeholder="">
+          </div>
+          <div class="field">
+            <label for="f-age" data-i18n="fAge">الفئة العمرية</label>
+            <select id="f-age">
+              <option value="3-5" data-i18n="age_3-5">3 - 5 سنوات</option>
+              <option value="6-8" data-i18n="age_6-8" selected>6 - 8 سنوات</option>
+              <option value="9-12" data-i18n="age_9-12">9 - 12 سنة</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-category-ar" data-i18n="fCategoryAr">التصنيف (عربي، اختياري)</label>
+            <input type="text" id="f-category-ar" maxlength="40">
+          </div>
+          <div class="field">
+            <label for="f-category-en" data-i18n="fCategoryEn">Category (English, optional)</label>
+            <input type="text" id="f-category-en" dir="ltr" maxlength="40">
+          </div>
+          <div class="field">
+            <label for="f-pdf" data-i18n="fPdf">ملف الكتاب (PDF)</label>
+            <input type="file" id="f-pdf" accept="application/pdf,.pdf">
+          </div>
+          <div class="field">
+            <label for="f-sum-ar" data-i18n="fSumAr">نبذة قصيرة (عربي)</label>
+            <textarea id="f-sum-ar" maxlength="300" data-i18n-ph="fPhSumAr" placeholder=""></textarea>
+          </div>
+          <div class="field">
+            <label for="f-sum-en" data-i18n="fSumEn">نبذة قصيرة (إنجليزي)</label>
+            <textarea id="f-sum-en" dir="ltr" maxlength="300" data-i18n-ph="fPhSumEn" placeholder=""></textarea>
+          </div>
+          <div class="field wide">
+            <label for="f-cover" data-i18n="fCover">صورة الغلاف (اختياري)</label>
+            <input type="file" id="f-cover" accept="image/png,image/jpeg,image/webp">
+          </div>
+          <div class="form-foot">
+            <button class="btn" type="submit" id="f-submit" data-i18n="fSubmit">رفع الكتاب</button>
+            <p class="status" id="f-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel" aria-labelledby="list-title" style="margin-top: 28px">
+        <h2 id="list-title" data-i18n="listTitle">3. الكتب الحالية</h2>
+        <ul class="manage" id="manage"></ul>
+        <p class="status" id="m-status" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <p><a href="index.html" data-i18n="backSite">العودة إلى الموقع</a></p>
+  </div>
+</main>
+
+<script src="i18n.js"></script>
+<script src="site-config.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var T = I18N.t;
+  var VAULT = "stories-vault-v1";
+  var MAX_PDF = 25 * 1024 * 1024;
+  var session = null;     /* { owner, repo, branch, token } في الذاكرة فقط */
+  var books = [];
+  var armed = null;
+  var busy = false;
+  var resetArmed = false;
+  var reconfigureArmed = false;
+  var siteSettings = SiteConfig.defaults();
+  var savedSiteSettings = SiteConfig.defaults();
+  var siteSettingsSha = null;
+  var siteSettingsAvailable = false;
+  var settingsBusy = false;
+  var editingQuoteId = null;
+
+  function h(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === "class") n.className = attrs[k];
+      else if (k === "text") n.textContent = attrs[k];
+      else if (k.slice(0, 2) === "on") n.addEventListener(k.slice(2), attrs[k]);
+      else n.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { if (c) n.appendChild(c); });
+    return n;
+  }
+
+  function say(id, text, kind) {
+    var s = $(id);
+    s.textContent = text || "";
+    s.className = "status" + (kind ? " " + kind : "");
+  }
+
+  /* ---------- التشفير: كلمة المرور تحمي مفتاح GitHub على هذا الجهاز ---------- */
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  function b64(buf) { var a = new Uint8Array(buf), s = ""; for (var i = 0; i < a.length; i++) s += String.fromCharCode(a[i]); return btoa(s); }
+  function unb64(s) { var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+  function hasCrypto() { return !!(window.crypto && crypto.subtle); }
+
+  function deriveKey(user, pass, salt) {
+    return crypto.subtle.importKey("raw", enc.encode(user.trim().toLowerCase() + ":" + pass), "PBKDF2", false, ["deriveKey"])
+      .then(function (k) {
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: salt, iterations: 200000, hash: "SHA-256" },
+          k, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+      });
+  }
+  function seal(user, pass, obj) {
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    return deriveKey(user, pass, salt).then(function (key) {
+      return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(JSON.stringify(obj)));
+    }).then(function (ct) {
+      return { v: 1, salt: b64(salt), iv: b64(iv), data: b64(ct) };
+    });
+  }
+  function unseal(user, pass, v) {
+    return deriveKey(user, pass, unb64(v.salt)).then(function (key) {
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(v.iv) }, key, unb64(v.data));
+    }).then(function (pt) { return JSON.parse(dec.decode(pt)); });
+  }
+  function getVault() { try { return JSON.parse(localStorage.getItem(VAULT) || "null"); } catch (e) { return null; } }
+
+  /* ---------- شاشة الدخول ---------- */
+  function showLock() {
+    var hasVault = !!getVault();
+    $("lock-title").textContent = T(reconfigureArmed ? "reconfigureTitle" : hasVault ? "loginTitle" : "setupTitle");
+    $("lock-note").textContent = T(reconfigureArmed ? "reconfigureNote" : hasVault ? "loginNote" : "setupNote");
+    $("l-submit").textContent = T(reconfigureArmed ? "lReconfigureSubmit" : hasVault ? "lLoginBtn" : "lSetupBtn");
+    $("l-pass-label").textContent = T(hasVault ? "lPass" : "lPassNew");
+    $("l-pass").setAttribute("autocomplete", hasVault ? "current-password" : "new-password");
+    document.querySelectorAll(".setup-only").forEach(function (n) { n.hidden = hasVault && !reconfigureArmed; });
+    $("l-reconfigure").hidden = !hasVault;
+    $("l-reset").hidden = !hasVault;
+    $("l-reset").textContent = T(resetArmed ? "lResetConfirm" : "lReset");
+    $("lock-screen").hidden = !!session;
+    $("app-screen").hidden = !session;
+    if (session) $("conn-info").textContent = T("connInfo") + session.owner + "/" + session.repo + " (" + session.branch + ")";
+  }
+
+  $("lock-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (busy) return;
+    if (!hasCrypto()) { say("l-status", T("eNoCrypto"), "err"); return; }
+    var user = $("l-user").value.trim(), pass = $("l-pass").value;
+    if (!user || !pass) { say("l-status", T("mNeedUser"), "err"); return; }
+    var vault = getVault();
+    busy = true; $("l-submit").disabled = true; say("l-status", "…");
+
+    var job;
+    var isReconfigure = !!vault && reconfigureArmed;
+    var isNewSetup = !vault;
+    if (isNewSetup || isReconfigure) {
+      var cfg = {
+        owner: $("c-owner").value.trim(), repo: $("c-repo").value.trim(),
+        branch: $("c-branch").value.trim() || "main", token: $("c-token").value.trim()
+      };
+      if (isNewSetup && pass.length < 8) { busy = false; $("l-submit").disabled = false; say("l-status", T("ePassShort"), "err"); return; }
+      if (!cfg.owner || !cfg.repo || !cfg.token) { busy = false; $("l-submit").disabled = false; say("l-status", T("mNeedConn"), "err"); return; }
+      if (isReconfigure) {
+        job = unseal(user, pass, vault).catch(function () { var e = new Error("wrong"); e.wrong = true; throw e; })
+          .then(function () { return validateConnection(cfg); }).then(function () { return cfg; });
+      } else job = validateConnection(cfg).then(function () { return cfg; });
+    } else {
+      job = unseal(user, pass, vault).catch(function () { var e = new Error("wrong"); e.wrong = true; throw e; })
+        .then(function (cfg) { return validateConnection(cfg).then(function () { return cfg; }); });
+    }
+    job.then(function (cfg) {
+      if (isNewSetup || isReconfigure) return seal(user, pass, cfg).then(function (v) {
+        try { localStorage.setItem(VAULT, JSON.stringify(v)); } catch (e) { var storageError = new Error("vault"); storageError.vault = true; throw storageError; }
+        return cfg;
+      });
+      return cfg;
+    }).then(function (cfg) {
+      session = cfg;
+      reconfigureArmed = false;
+      $("l-pass").value = ""; $("c-token").value = "";
+      say("l-status", "");
+      showLock();
+      refresh();
+      loadSiteSettings();
+    }).catch(function (e) {
+      say("l-status", e && e.wrong ? T("eWrong") : e && e.vault ? T("eVault") : errText(e), "err");
+    }).then(function () { busy = false; $("l-submit").disabled = false; });
+  });
+
+  $("l-reconfigure").addEventListener("click", function () {
+    reconfigureArmed = !reconfigureArmed;
+    if (reconfigureArmed) {
+      $("c-owner").value = "Mohamed-Elzeiny";
+      $("c-repo").value = "Kids-Stories-World";
+      $("c-branch").value = "main";
+      $("c-token").value = "";
+    }
+    showLock();
+    say("l-status", reconfigureArmed ? T("reconfigurePrompt") : "");
+  });
+
+  $("l-reset").addEventListener("click", function () {
+    if (!resetArmed) {
+      resetArmed = true; showLock();
+      setTimeout(function () { resetArmed = false; showLock(); }, 5000);
+      return;
+    }
+    try { localStorage.removeItem(VAULT); } catch (e) {}
+    resetArmed = false; session = null; say("l-status", ""); showLock();
+  });
+
+  $("logout").addEventListener("click", function () {
+    session = null; books = []; renderList(); say("l-status", ""); showLock();
+  });
+
+  /* ---------- GitHub ---------- */
+  function gh(method, path, body) {
+    var c = session;
+    var url = "https://api.github.com/repos/" + encodeURIComponent(c.owner) + "/" + encodeURIComponent(c.repo) + "/contents/" + path;
+    if (method === "GET") url += "?ref=" + encodeURIComponent(c.branch) + "&t=" + Date.now();
+    return fetch(url, {
+      method: method,
+      headers: {
+        "Authorization": "Bearer " + c.token,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (r) {
+      if (r.status === 204) return {};
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok) { var e = new Error(j.message || r.status); e.status = r.status; e.githubMessage = j.message || ""; e.method = method; e.path = path; throw e; }
+        return j;
+      });
+    });
+  }
+
+  function validateConnection(cfg) {
+    var base = "https://api.github.com/repos/" + encodeURIComponent(cfg.owner) + "/" + encodeURIComponent(cfg.repo);
+    function check(path, step) {
+      return fetch(base + path, { headers: {
+        "Authorization": "Bearer " + cfg.token,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      } }).then(function (response) {
+        return response.json().catch(function () { return {}; }).then(function (data) {
+          if (!response.ok) {
+            var error = new Error(data.message || response.status);
+            error.status = response.status; error.githubMessage = data.message || ""; error.connectionStep = step;
+            throw error;
+          }
+          return data;
+        });
+      });
+    }
+    return check("", "repo").then(function () {
+      return check("/branches/" + encodeURIComponent(cfg.branch), "branch");
+    }).then(function () {
+      return check("/contents/books.json?ref=" + encodeURIComponent(cfg.branch), "contents");
+    });
+  }
+
+  function errText(e) {
+    var s = e && e.status;
+    if (s === 401) return T("e401");
+    if (s === 403) return T("e403") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 404 && e.connectionStep === "repo") return T("eRepoMissing");
+    if (s === 404 && e.connectionStep === "branch") return T("eBranchMissing");
+    if (s === 404 && e.connectionStep === "contents") return T("eContentsMissing") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 404 && e.method === "PUT") return T("eWrite404") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 404) return T("e404") + (e.githubMessage ? " " + e.githubMessage : "");
+    if (s === 409 || s === 422) return T("e409");
+    if (!s) return T("eNet");
+    return T("eOther") + " (" + s + ")";
+  }
+
+  function blobB64(blob) {
+    return new Promise(function (res, rej) {
+      var r = new FileReader();
+      r.onload = function () { res(String(r.result).split(",")[1]); };
+      r.onerror = rej;
+      r.readAsDataURL(blob);
+    });
+  }
+  function textB64(s) { return b64(enc.encode(s)); }
+  function b64Text(s) { return dec.decode(unb64(s.replace(/\s/g, ""))); }
+
+  /* ---------- إعدادات الموقع ---------- */
+  var textKeys = ["eyebrow", "heroTitle", "heroSubtitle", "welcomeText", "browse", "sectionKicker", "shelfTitle", "sectionIntro", "aboutTitle", "aboutText", "footer"];
+  var paletteDefinitions = SiteConfig.palettes();
+  function putPair(root, key, language, value) { root[key][language] = value; }
+  function readSettingsForm() {
+    siteSettings.siteName.ar = $("setting-name-ar").value;
+    siteSettings.siteName.en = $("setting-name-en").value;
+    textKeys.forEach(function (key) {
+      putPair(siteSettings.texts, key, "ar", $("setting-" + key + "-ar").value);
+      putPair(siteSettings.texts, key, "en", $("setting-" + key + "-en").value);
+    });
+    siteSettings.theme.font = $("setting-font").value;
+    siteSettings.theme.headingSize = $("setting-heading-size").value;
+    siteSettings.theme.bodySize = $("setting-body-size").value;
+    siteSettings = SiteConfig.normalize(siteSettings);
+  }
+  function previewSettings() {
+    readSettingsForm();
+    var preview = $("settings-preview");
+    preview.style.setProperty("--color-primary", siteSettings.theme.primary);
+    preview.style.setProperty("--color-page", siteSettings.theme.background);
+    preview.style.setProperty("--color-ink", siteSettings.theme.text);
+    preview.style.setProperty("--color-button", siteSettings.theme.button);
+    preview.style.setProperty("--color-paper", siteSettings.theme.card);
+    preview.style.setProperty("--font-body", siteSettings.theme.font === "serif" ? 'Georgia, "Times New Roman", Tahoma, serif' : siteSettings.theme.font === "system" ? 'Tahoma, Arial, "Segoe UI", sans-serif' : '"Cairo", "Segoe UI", Tahoma, Arial, sans-serif');
+    preview.style.setProperty("--font-display", siteSettings.theme.font === "serif" ? 'Georgia, "Times New Roman", Tahoma, serif' : siteSettings.theme.font === "system" ? '"Trebuchet MS", Tahoma, Arial, sans-serif' : (I18N.lang === "en" ? '"Fredoka", "Cairo", "Segoe UI", Tahoma, sans-serif' : '"Cairo", "Segoe UI", Tahoma, sans-serif'));
+    preview.style.setProperty("--heading-scale", { small: "0.9", medium: "1", large: "1.12" }[siteSettings.theme.headingSize]);
+    preview.style.setProperty("--body-scale", { small: "0.9", medium: "1", large: "1.1" }[siteSettings.theme.bodySize]);
+    var lang = I18N.lang;
+    $("settings-preview-name").textContent = siteSettings.siteName[lang] || siteSettings.siteName[lang === "en" ? "ar" : "en"];
+    $("settings-preview-title").textContent = siteSettings.texts.heroTitle[lang] || siteSettings.texts.heroTitle[lang === "en" ? "ar" : "en"];
+    $("settings-preview-copy").textContent = T("previewCopy");
+    $("settings-preview-button").style.fontFamily = "var(--font-body)";
+  }
+  function fillSettingsForm(config) {
+    siteSettings = SiteConfig.clone(config);
+    $("setting-name-ar").value = siteSettings.siteName.ar;
+    $("setting-name-en").value = siteSettings.siteName.en;
+    textKeys.forEach(function (key) {
+      $("setting-" + key + "-ar").value = siteSettings.texts[key].ar;
+      $("setting-" + key + "-en").value = siteSettings.texts[key].en;
+    });
+    renderPalettes();
+    $("setting-font").value = siteSettings.theme.font;
+    $("setting-heading-size").value = siteSettings.theme.headingSize;
+    $("setting-body-size").value = siteSettings.theme.bodySize;
+    renderQuotes(); previewSettings();
+  }
+  function renderPalettes() {
+    var container = $("palette-options"); container.textContent = "";
+    if (siteSettings.theme.palette === "custom") container.appendChild(h("p", { class: "palette-legacy-note", text: T("paletteCustomNotice") }));
+    Object.keys(paletteDefinitions).forEach(function (id) {
+      var palette = paletteDefinitions[id];
+      var radio = h("input", { type: "radio", name: "site-palette", value: id });
+      radio.checked = siteSettings.theme.palette === id;
+      var swatches = h("span", { class: "palette-swatches", "aria-hidden": "true" });
+      ["primary", "secondary", "background", "button"].forEach(function (key) {
+        var swatch = h("span", { class: "palette-swatch" });
+        swatch.style.backgroundColor = palette.colors[key];
+        swatches.appendChild(swatch);
+      });
+      container.appendChild(h("label", { class: "palette-option" + (radio.checked ? " selected" : "") }, [radio, h("span", { class: "palette-title", text: T(palette.label) }), swatches]));
+    });
+  }
+  function quoteText(quote) { return quote.text[I18N.lang] || quote.text[I18N.lang === "en" ? "ar" : "en"]; }
+  function renderQuotes() {
+    var list = $("quote-list"); list.textContent = "";
+    if (!siteSettings.quotes.length) { list.appendChild(h("li", {}, [h("span", { class: "t", text: T("quoteEmpty") })])); return; }
+    siteSettings.quotes.forEach(function (quote) {
+      var tools = h("span", { class: "quote-tools" });
+      var radio = h("input", { type: "radio", name: "featured-quote", value: quote.id, "aria-label": T("quoteFeature") });
+      radio.checked = siteSettings.featuredQuoteId === quote.id;
+      radio.addEventListener("change", function () { siteSettings.featuredQuoteId = quote.id; previewSettings(); say("settings-status", T("settingsUnsaved")); });
+      tools.appendChild(radio); tools.appendChild(h("span", { text: T("quoteFeature") }));
+      tools.appendChild(h("button", { class: "btn small", type: "button", text: T("quoteEdit"), onclick: function () { editQuote(quote); } }));
+      tools.appendChild(h("button", { class: "btn small danger", type: "button", text: T("quoteDelete"), onclick: function () { deleteQuote(quote); } }));
+      var author = quote.author[I18N.lang] || quote.author[I18N.lang === "en" ? "ar" : "en"];
+      list.appendChild(h("li", {}, [h("span", { class: "quote-copy t" }, [document.createTextNode(quoteText(quote)), author ? h("small", { text: author }) : null]), tools]));
+    });
+  }
+  function resetQuoteEditor() {
+    editingQuoteId = null;
+    $("quote-text-ar").value = ""; $("quote-text-en").value = "";
+    $("quote-author-ar").value = ""; $("quote-author-en").value = "";
+    $("quote-save").textContent = T("quoteAdd");
+  }
+  function editQuote(quote) {
+    editingQuoteId = quote.id;
+    $("quote-text-ar").value = quote.text.ar; $("quote-text-en").value = quote.text.en;
+    $("quote-author-ar").value = quote.author.ar; $("quote-author-en").value = quote.author.en;
+    $("quote-save").textContent = T("quoteUpdate");
+  }
+  function deleteQuote(quote) {
+    siteSettings.quotes = siteSettings.quotes.filter(function (item) { return item.id !== quote.id; });
+    if (siteSettings.featuredQuoteId === quote.id) siteSettings.featuredQuoteId = siteSettings.quotes.length ? siteSettings.quotes[0].id : "";
+    if (editingQuoteId === quote.id) resetQuoteEditor();
+    renderQuotes(); previewSettings(); say("settings-status", T("settingsUnsaved"));
+  }
+  $("quote-save").addEventListener("click", function () {
+    var text = { ar: $("quote-text-ar").value.trim(), en: $("quote-text-en").value.trim() };
+    if (!text.ar && !text.en) { say("settings-status", T("quoteNeedText"), "err"); return; }
+    var quote = { id: editingQuoteId || ("quote-" + Date.now().toString(36)), text: text, author: { ar: $("quote-author-ar").value.trim(), en: $("quote-author-en").value.trim() } };
+    var index = siteSettings.quotes.findIndex(function (item) { return item.id === editingQuoteId; });
+    if (index >= 0) siteSettings.quotes[index] = quote; else siteSettings.quotes.push(quote);
+    if (!siteSettings.featuredQuoteId) siteSettings.featuredQuoteId = quote.id;
+    resetQuoteEditor(); renderQuotes(); previewSettings(); say("settings-status", T("settingsUnsaved"));
+  });
+  $("quote-cancel").addEventListener("click", resetQuoteEditor);
+  $("site-settings-form").addEventListener("input", function (event) {
+    if (event.target.closest(".quote-editor")) return;
+    previewSettings(); say("settings-status", T("settingsUnsaved"));
+  });
+  $("site-settings-form").addEventListener("change", function (event) {
+    if (event.target.closest(".quote-editor")) return;
+    if (event.target.name === "site-palette") {
+      var selectedPalette = paletteDefinitions[event.target.value];
+      if (selectedPalette) {
+        siteSettings.theme.palette = event.target.value;
+        Object.keys(selectedPalette.colors).forEach(function (key) { siteSettings.theme[key] = selectedPalette.colors[key]; });
+        renderPalettes();
+      }
+    }
+    previewSettings(); say("settings-status", T("settingsUnsaved"));
+  });
+  $("site-settings-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!session || !siteSettingsAvailable || settingsBusy || busy) return;
+    readSettingsForm(); settingsBusy = true; $("settings-save").disabled = true; say("settings-status", T("settingsSaving"));
+    var body = { message: "Update site settings", content: textB64(JSON.stringify(siteSettings, null, 2) + "\n"), branch: session.branch };
+    if (siteSettingsSha) body.sha = siteSettingsSha;
+    gh("PUT", "site-config.json", body).then(function (file) {
+      siteSettingsSha = file.content && file.content.sha || siteSettingsSha;
+      savedSiteSettings = SiteConfig.clone(siteSettings);
+      say("settings-status", T("settingsSaveSuccess"), "ok");
+    }).catch(function (error) { say("settings-status", T("settingsSaveFailure") + errText(error), "err"); })
+      .then(function () { settingsBusy = false; $("settings-save").disabled = !siteSettingsAvailable; });
+  });
+  $("settings-cancel").addEventListener("click", function () {
+    if (!siteSettingsAvailable) return;
+    resetQuoteEditor();
+    fillSettingsForm(savedSiteSettings); say("settings-status", T("settingsLoaded"));
+  });
+  function loadSiteSettings() {
+    siteSettingsAvailable = false; $("settings-save").disabled = true; say("settings-status", T("settingsLoading"));
+    gh("GET", "site-config.json").then(function (file) {
+      siteSettingsSha = file.sha; savedSiteSettings = SiteConfig.normalize(JSON.parse(b64Text(file.content)));
+      siteSettingsAvailable = true; fillSettingsForm(savedSiteSettings); say("settings-status", T("settingsLoaded"), "ok");
+    }).catch(function (error) {
+      if (error.status === 404) {
+        siteSettingsSha = null; savedSiteSettings = SiteConfig.defaults(); siteSettingsAvailable = true;
+        fillSettingsForm(savedSiteSettings); say("settings-status", T("settingsNotFound"));
+      } else { fillSettingsForm(SiteConfig.defaults()); say("settings-status", T("settingsLoadError") + errText(error), "err"); }
+    }).then(function () { $("settings-save").disabled = !siteSettingsAvailable; });
+  }
+
+  function shrinkCover(file) {
+    return new Promise(function (res, rej) {
+      var img = new Image();
+      var url = URL.createObjectURL(file);
+      img.onload = function () {
+        var w = Math.min(600, img.width), ratio = img.width ? w / img.width : 1;
+        var cv = document.createElement("canvas");
+        cv.width = Math.round(img.width * ratio);
+        cv.height = Math.round(img.height * ratio);
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+        URL.revokeObjectURL(url);
+        cv.toBlob(function (b) { b ? res(b) : rej(new Error("cover")); }, "image/jpeg", 0.85);
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error("cover")); };
+      img.src = url;
+    });
+  }
+
+  function loadBooks() {
+    return gh("GET", "books.json").then(function (f) {
+      var list = [];
+      try { list = JSON.parse(b64Text(f.content)); } catch (e) { list = []; }
+      return { list: Array.isArray(list) ? list : [], sha: f.sha };
+    }).catch(function (e) {
+      if (e.status === 404) return { list: [], sha: null };
+      throw e;
+    });
+  }
+  function saveBooks(list, sha, message) {
+    var body = { message: message, content: textB64(JSON.stringify(list, null, 2) + "\n"), branch: session.branch };
+    if (sha) body.sha = sha;
+    return gh("PUT", "books.json", body);
+  }
+
+  function renderList() {
+    var ul = $("manage");
+    ul.textContent = "";
+    if (!books.length) {
+      ul.appendChild(h("li", {}, [h("span", { class: "t", text: T("noBooks") })]));
+      return;
+    }
+    books.forEach(function (b) {
+      var isArmed = armed === b.id;
+      var ageKey = "age_" + b.age;
+      ul.appendChild(h("li", {}, [
+        h("span", { class: "t" }, [document.createTextNode(I18N.pick(b, "title")), h("small", { text: T(ageKey) === ageKey ? (b.age || "") : T(ageKey) })]),
+        h("button", {
+          class: "btn small danger", type: "button", text: isArmed ? T("delConfirm") : T("del"),
+          onclick: function () {
+            if (!isArmed) {
+              armed = b.id; renderList();
+              setTimeout(function () { if (armed === b.id) { armed = null; renderList(); } }, 4000);
+            } else { removeBook(b); }
+          }
+        })
+      ]));
+    });
+  }
+
+  function refresh() {
+    say("m-status", T("mChecking"));
+    return loadBooks().then(function (r) {
+      books = r.list;
+      renderList();
+      say("m-status", T("mConnected") + books.length, "ok");
+    }).catch(function (e) { say("m-status", errText(e), "err"); });
+  }
+
+  $("book-form").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (busy || !session) return;
+    var titleAr = $("f-title-ar").value.trim(), titleEn = $("f-title-en").value.trim();
+    var pdf = $("f-pdf").files[0];
+    var cover = $("f-cover").files[0];
+    if (!titleAr && !titleEn) { say("f-status", T("mNeedTitle"), "err"); return; }
+    if (!pdf) { say("f-status", T("mNeedPdf"), "err"); return; }
+    if (pdf.size > MAX_PDF) { say("f-status", T("mPdfBig"), "err"); return; }
+
+    busy = true;
+    $("f-submit").disabled = true;
+    var id = "b" + Date.now().toString(36);
+    var filePath = "books/" + id + ".pdf";
+    var coverPath = cover ? "covers/" + id + ".jpg" : "";
+    var branch = session.branch;
+    var label = titleEn || titleAr;
+
+    say("f-status", T("mUpPdf"));
+    blobB64(pdf).then(function (data) {
+      return gh("PUT", filePath, { message: "Add book: " + label, content: data, branch: branch });
+    }).then(function () {
+      if (!cover) return null;
+      say("f-status", T("mUpCover"));
+      return shrinkCover(cover).then(blobB64).then(function (data) {
+        return gh("PUT", coverPath, { message: "Cover: " + label, content: data, branch: branch });
+      });
+    }).then(function () {
+      say("f-status", T("mUpList"));
+      return loadBooks();
+    }).then(function (r) {
+      var book = {
+        id: id, title: titleAr, titleEn: titleEn,
+        summary: $("f-sum-ar").value.trim(), summaryEn: $("f-sum-en").value.trim(),
+        age: $("f-age").value, file: filePath, cover: coverPath,
+        category: $("f-category-ar").value.trim(), categoryEn: $("f-category-en").value.trim()
+      };
+      var next = [book].concat(r.list);
+      return saveBooks(next, r.sha, "Update book list").then(function () { books = next; });
+    }).then(function () {
+      $("book-form").reset();
+      renderList();
+      say("f-status", T("mDone"), "ok");
+    }).catch(function (e) {
+      say("f-status", errText(e), "err");
+    }).then(function () { busy = false; $("f-submit").disabled = false; });
+  });
+
+  function removeBook(b) {
+    if (busy || !session) return;
+    busy = true;
+    armed = null;
+    var branch = session.branch;
+    loadBooks().then(function (r) {
+      var next = r.list.filter(function (x) { return x.id !== b.id; });
+      return saveBooks(next, r.sha, "Remove book: " + (b.titleEn || b.title || "")).then(function () { books = next; });
+    }).then(function () {
+      var paths = [b.file, b.cover].filter(Boolean);
+      return Promise.all(paths.map(function (p) {
+        return gh("GET", p).then(function (f) {
+          return gh("DELETE", p, { message: "Remove file", sha: f.sha, branch: branch });
+        }).catch(function () {});
+      }));
+    }).then(function () {
+      renderList();
+      say("m-status", T("mDeleted"), "ok");
+    }).catch(function (e) {
+      say("m-status", errText(e), "err");
+      renderList();
+    }).then(function () { busy = false; });
+  }
+
+  I18N.on(function () { showLock(); renderList(); renderQuotes(); renderPalettes(); previewSettings(); $("quote-save").textContent = T(editingQuoteId ? "quoteUpdate" : "quoteAdd"); });
+  showLock();
+})();
+</script>
+</body>
+</html>
