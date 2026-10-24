@@ -27,6 +27,8 @@
   </div>
 </header>
 
+<p class="site-config-warning container" id="site-config-warning" role="status" data-i18n="siteConfigLoadError" hidden>تعذر تحميل إعدادات المظهر المحفوظة. تُعرض الألوان الافتراضية مؤقتًا.</p>
+
 <main>
   <section class="welcome">
     <div class="container welcome-grid">
@@ -151,7 +153,9 @@
   $("story-search").addEventListener("input", function (event) { query = event.target.value; render(); });
   I18N.on(function () { applySiteConfig(); render(); });
   applySiteConfig();
-  SiteConfig.load().then(function (settings) { siteConfig = settings; applySiteConfig(); });
+  SiteConfig.load().then(function (settings) { siteConfig = settings; applySiteConfig(); }).catch(function () {
+    document.getElementById("site-config-warning").hidden = false;
+  });
   render();
   fetch("books.json?v=" + Date.now()).then(function (response) { if (!response.ok) throw new Error(response.status); return response.json(); }).then(function (data) { books = Array.isArray(data) ? data : []; state = "ready"; render(); }).catch(function () { books = []; state = "error"; render(); });
 })();

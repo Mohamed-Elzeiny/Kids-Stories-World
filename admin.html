@@ -540,13 +540,26 @@
     event.preventDefault();
     if (!session || !siteSettingsAvailable || settingsBusy || busy) return;
     readSettingsForm(); settingsBusy = true; $("settings-save").disabled = true; say("settings-status", T("settingsSaving"));
-    var body = { message: "Update site settings", content: textB64(JSON.stringify(siteSettings, null, 2) + "\n"), branch: session.branch };
+    var configToSave = SiteConfig.normalize(siteSettings);
+    var expectedJson = JSON.stringify(configToSave);
+    var body = { message: "Update site settings", content: textB64(JSON.stringify(configToSave, null, 2) + "\n"), branch: session.branch };
     if (siteSettingsSha) body.sha = siteSettingsSha;
-    gh("PUT", "site-config.json", body).then(function (file) {
-      siteSettingsSha = file.content && file.content.sha || siteSettingsSha;
+    gh("PUT", "site-config.json", body).then(function () {
+      return gh("GET", "site-config.json").then(function (file) {
+        var saved = SiteConfig.normalize(JSON.parse(b64Text(file.content)));
+        if (JSON.stringify(saved) !== expectedJson) { var mismatch = new Error("verify"); mismatch.verification = true; throw mismatch; }
+        siteSettingsSha = file.sha || siteSettingsSha;
+      }).catch(function (error) {
+        if (error.verification) throw error;
+        var verification = new Error("verify"); verification.verification = true; verification.detail = errText(error); throw verification;
+      });
+    }).then(function () {
       savedSiteSettings = SiteConfig.clone(siteSettings);
       say("settings-status", T("settingsSaveSuccess"), "ok");
-    }).catch(function (error) { say("settings-status", T("settingsSaveFailure") + errText(error), "err"); })
+    }).catch(function (error) {
+      var message = error.verification ? T("settingsVerifyFailure") + (error.detail || T("eOther")) : T("settingsSaveFailure") + errText(error);
+      say("settings-status", message, "err");
+    })
       .then(function () { settingsBusy = false; $("settings-save").disabled = !siteSettingsAvailable; });
   });
   $("settings-cancel").addEventListener("click", function () {

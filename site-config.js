@@ -86,6 +86,8 @@
     if (document.body && document.body.id === "top") document.title = localized(config.siteName, lang);
     var meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", localized(config.texts.aboutText, lang));
+    var themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) themeColor.setAttribute("content", config.theme.background);
     var root = document.documentElement;
     root.style.setProperty("--color-primary", config.theme.primary);
     root.style.setProperty("--color-secondary", config.theme.secondary);
@@ -118,10 +120,10 @@
     }
   }
   function load() {
-    return fetch("site-config.json?v=" + Date.now()).then(function (response) {
+    return fetch("site-config.json?v=" + Date.now(), { cache: "no-store" }).then(function (response) {
       if (!response.ok) throw new Error("site-config " + response.status);
       return response.json();
-    }).then(normalize).catch(function () { return clone(DEFAULTS); });
+    }).then(normalize);
   }
   window.SiteConfig = { defaults: function () { return clone(DEFAULTS); }, normalize: normalize, clone: clone, apply: apply, load: load, palettes: function () { return clone(PALETTES); } };
 })();

@@ -18,6 +18,7 @@
 </div></header>
 <main class="story-page container">
   <a class="back-link" href="index.html#stories"><span aria-hidden="true">←</span> <span data-i18n="storyBack">العودة إلى القصص</span></a>
+  <p class="site-config-warning" id="site-config-warning" role="status" data-i18n="siteConfigLoadError" hidden>تعذر تحميل إعدادات المظهر المحفوظة. تُعرض الألوان الافتراضية مؤقتًا.</p>
   <div id="story-content" aria-live="polite" aria-busy="true"></div>
 </main>
 <footer class="site-footer"><div class="container footer-row"><span><span aria-hidden="true">✿</span> <span data-i18n="footer">حكاية جميلة قد تجعل يومك أجمل.</span></span><a href="index.html" data-i18n="navStories">القصص</a></div></footer>
@@ -103,7 +104,9 @@
   }
   I18N.on(function () { applySiteConfig(); render(); });
   applySiteConfig();
-  SiteConfig.load().then(function (settings) { siteConfig = settings; applySiteConfig(); render(); });
+  SiteConfig.load().then(function (settings) { siteConfig = settings; applySiteConfig(); render(); }).catch(function () {
+    document.getElementById("site-config-warning").hidden = false;
+  });
   fetch("books.json?v=" + Date.now()).then(function (response) { if (!response.ok) throw new Error(response.status); return response.json(); }).then(function (data) { stories = Array.isArray(data) ? data : []; area.setAttribute("aria-busy", "false"); render(); }).catch(function () {
     area.setAttribute("aria-busy", "false"); area.textContent = "";
     area.appendChild(el("section", { class: "empty-state story-empty" }, [el("h1", { text: I18N.t("loadErrorTitle") }), el("p", { text: I18N.t("loadFail") }), el("a", { class: "btn", href: "index.html#stories", text: I18N.t("storyBack") })]));
