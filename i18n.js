@@ -223,6 +223,31 @@
     footer: "A lovely story can make your day brighter."
   });
 
+  Object.assign(D.ar, {
+    homePage: "الصفحة الرئيسية", siteSettingsTitle: "إعدادات الموقع", settingsNote: "تُحفظ التغييرات في مستودع الموقع عبر GitHub. إذا تعذر الحفظ، ستظهر رسالة توضح السبب.",
+    settingsIdentity: "هوية الموقع", settingsHomeText: "نصوص الصفحة الرئيسية", siteNameAr: "اسم الموقع بالعربية", siteNameEn: "اسم الموقع بالإنجليزية",
+    settingEyebrow: "عبارة قصيرة (عربي)", settingEyebrowEn: "عبارة قصيرة (إنجليزي)", settingHeroTitleAr: "العنوان الرئيسي (عربي)", settingHeroTitleEn: "العنوان الرئيسي (إنجليزي)",
+    settingSubtitleAr: "العنوان الفرعي (عربي)", settingSubtitleEn: "العنوان الفرعي (إنجليزي)", settingWelcomeAr: "النص الترحيبي (عربي)", settingWelcomeEn: "النص الترحيبي (إنجليزي)",
+    settingBrowseAr: "نص زر القصص (عربي)", settingBrowseEn: "نص زر القصص (إنجليزي)", settingKickerAr: "عبارة قسم القصص (عربي)", settingKickerEn: "عبارة قسم القصص (إنجليزي)",
+    settingShelfAr: "عنوان قسم القصص (عربي)", settingShelfEn: "عنوان قسم القصص (إنجليزي)", settingSectionIntroAr: "وصف قسم القصص (عربي)", settingSectionIntroEn: "وصف قسم القصص (إنجليزي)",
+    settingAboutTitleAr: "عنوان التعريف (عربي)", settingAboutTitleEn: "عنوان التعريف (إنجليزي)", settingAboutTextAr: "وصف الموقع (عربي)", settingAboutTextEn: "وصف الموقع (إنجليزي)", settingFooterAr: "نص التذييل (عربي)", settingFooterEn: "نص التذييل (إنجليزي)",
+    settingsQuotes: "الاقتباسات", quoteNote: "أضف اقتباساتك واكتب النسختين اللغويتين. اختر الاقتباس الذي يظهر في الصفحة الرئيسية.", quoteTextAr: "الاقتباس (عربي)", quoteTextEn: "الاقتباس (إنجليزي)", quoteAuthorAr: "صاحب الاقتباس (اختياري، عربي)", quoteAuthorEn: "صاحب الاقتباس (اختياري، إنجليزي)", quoteAdd: "إضافة الاقتباس", quoteUpdate: "حفظ الاقتباس", quoteCancel: "إلغاء التعديل", quoteEmpty: "لا توجد اقتباسات مضافة.", quoteFeature: "عرض في الرئيسية", quoteEdit: "تعديل", quoteDelete: "حذف", quoteNeedText: "اكتب الاقتباس بالعربية أو الإنجليزية أولًا.",
+    settingsAppearance: "الألوان والخطوط", colorPrimary: "اللون الأساسي", colorSecondary: "اللون الثانوي", colorBackground: "لون الخلفية", colorText: "لون النصوص", colorButton: "لون الأزرار", colorCard: "لون البطاقات", settingFont: "نوع الخط", fontCairo: "القاهرة / Cairo", fontSystem: "خط النظام", fontSerif: "خط كلاسيكي", headingSize: "حجم العناوين", bodySize: "حجم النصوص", sizeSmall: "صغير", sizeMedium: "متوسط", sizeLarge: "كبير", settingsPreview: "معاينة مباشرة", previewCopy: "تظهر الألوان والخطوط هنا مباشرة أثناء التعديل.",
+    saveSettings: "حفظ الإعدادات", cancelSettings: "إلغاء التعديلات", settingsLoading: "جارٍ تحميل إعدادات الموقع…", settingsLoaded: "تم تحميل الإعدادات المحفوظة.", settingsNotFound: "لا يوجد ملف إعدادات محفوظ بعد. ستُستخدم القيم الافتراضية ويمكن حفظها لإنشاء الملف.", settingsLoadError: "تعذر تحميل إعدادات الموقع من GitHub. لن يُسمح بالحفظ قبل إعادة الاتصال.", settingsUnsaved: "توجد تعديلات غير محفوظة.", settingsSaving: "جارٍ حفظ الإعدادات في GitHub…", settingsSaveSuccess: "تم حفظ الإعدادات في GitHub.", settingsSaveFailure: "لم يتم حفظ الإعدادات في GitHub: "
+  });
+  Object.assign(D.en, {
+    homePage: "Home", siteSettingsTitle: "Site Settings", settingsNote: "Changes are saved to the site repository through GitHub. If saving fails, the reason will be shown.",
+    settingsIdentity: "Site identity", settingsHomeText: "Homepage text", siteNameAr: "Site name in Arabic", siteNameEn: "Site name in English",
+    settingEyebrow: "Short intro (Arabic)", settingEyebrowEn: "Short intro (English)", settingHeroTitleAr: "Main heading (Arabic)", settingHeroTitleEn: "Main heading (English)",
+    settingSubtitleAr: "Subtitle (Arabic)", settingSubtitleEn: "Subtitle (English)", settingWelcomeAr: "Welcome text (Arabic)", settingWelcomeEn: "Welcome text (English)",
+    settingBrowseAr: "Stories button (Arabic)", settingBrowseEn: "Stories button (English)", settingKickerAr: "Stories section label (Arabic)", settingKickerEn: "Stories section label (English)",
+    settingShelfAr: "Stories section heading (Arabic)", settingShelfEn: "Stories section heading (English)", settingSectionIntroAr: "Stories section description (Arabic)", settingSectionIntroEn: "Stories section description (English)",
+    settingAboutTitleAr: "About heading (Arabic)", settingAboutTitleEn: "About heading (English)", settingAboutTextAr: "Site description (Arabic)", settingAboutTextEn: "Site description (English)", settingFooterAr: "Footer text (Arabic)", settingFooterEn: "Footer text (English)",
+    settingsQuotes: "Quotes", quoteNote: "Add your own quotes in both languages and choose which one appears on the homepage.", quoteTextAr: "Quote (Arabic)", quoteTextEn: "Quote (English)", quoteAuthorAr: "Quote author (optional, Arabic)", quoteAuthorEn: "Quote author (optional, English)", quoteAdd: "Add quote", quoteUpdate: "Save quote", quoteCancel: "Cancel edit", quoteEmpty: "No quotes have been added.", quoteFeature: "Show on homepage", quoteEdit: "Edit", quoteDelete: "Delete", quoteNeedText: "Enter the quote in Arabic or English first.",
+    settingsAppearance: "Colors and fonts", colorPrimary: "Primary color", colorSecondary: "Secondary color", colorBackground: "Background color", colorText: "Text color", colorButton: "Button color", colorCard: "Card color", settingFont: "Font family", fontCairo: "Cairo", fontSystem: "System font", fontSerif: "Classic serif", headingSize: "Heading size", bodySize: "Body text size", sizeSmall: "Small", sizeMedium: "Medium", sizeLarge: "Large", settingsPreview: "Live preview", previewCopy: "Colors and fonts preview here while you edit.",
+    saveSettings: "Save settings", cancelSettings: "Cancel changes", settingsLoading: "Loading site settings…", settingsLoaded: "Saved settings loaded.", settingsNotFound: "No settings file exists yet. Defaults are shown; save to create the file.", settingsLoadError: "Could not load site settings from GitHub. Saving is disabled until the connection is restored.", settingsUnsaved: "You have unsaved changes.", settingsSaving: "Saving settings to GitHub…", settingsSaveSuccess: "Settings saved to GitHub.", settingsSaveFailure: "Settings were not saved to GitHub: "
+  });
+
   var KEY = "stories-lang";
   var lang = "ar";
   try { var s = localStorage.getItem(KEY); if (s === "ar" || s === "en") lang = s; } catch (e) {}

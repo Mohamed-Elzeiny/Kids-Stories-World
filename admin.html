@@ -15,6 +15,7 @@
 
 <header class="topbar">
   <div class="band-inner">
+    <a class="admin-home-link" href="index.html" data-i18n="homePage">الصفحة الرئيسية</a>
     <button type="button" id="lang-btn" class="lang-btn" data-i18n="langBtn">English</button>
   </div>
 </header>
@@ -71,6 +72,55 @@
 
     <!-- لوحة الإدارة بعد الدخول -->
     <div id="app-screen" hidden>
+      <section class="panel settings-panel" aria-labelledby="settings-title">
+        <div class="section-head"><h2 id="settings-title" data-i18n="siteSettingsTitle">إعدادات الموقع</h2></div>
+        <p class="note" data-i18n="settingsNote">تُحفظ الإعدادات في site-config.json عبر GitHub عند الضغط على حفظ.</p>
+        <form id="site-settings-form" class="settings-form">
+          <fieldset class="settings-group"><legend data-i18n="settingsIdentity">هوية الموقع</legend>
+            <div class="settings-fields">
+              <div class="field"><label for="setting-name-ar" data-i18n="siteNameAr">اسم الموقع بالعربية</label><input id="setting-name-ar" type="text" maxlength="100"></div>
+              <div class="field"><label for="setting-name-en" data-i18n="siteNameEn">اسم الموقع بالإنجليزية</label><input id="setting-name-en" type="text" dir="ltr" maxlength="100"></div>
+            </div>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsHomeText">نصوص الصفحة الرئيسية</legend>
+            <div class="settings-fields">
+              <div class="field"><label for="setting-eyebrow-ar" data-i18n="settingEyebrow">عبارة ترحيبية قصيرة (عربي)</label><input id="setting-eyebrow-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-eyebrow-en" data-i18n="settingEyebrowEn">Short intro (English)</label><input id="setting-eyebrow-en" type="text" dir="ltr" maxlength="250"></div>
+              <div class="field"><label for="setting-heroTitle-ar" data-i18n="settingHeroTitleAr">العنوان الرئيسي (عربي)</label><input id="setting-heroTitle-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-heroTitle-en" data-i18n="settingHeroTitleEn">Main heading (English)</label><input id="setting-heroTitle-en" type="text" dir="ltr" maxlength="250"></div>
+              <div class="field"><label for="setting-heroSubtitle-ar" data-i18n="settingSubtitleAr">العنوان الفرعي (عربي)</label><textarea id="setting-heroSubtitle-ar" maxlength="1000"></textarea></div><div class="field"><label for="setting-heroSubtitle-en" data-i18n="settingSubtitleEn">Subtitle (English)</label><textarea id="setting-heroSubtitle-en" dir="ltr" maxlength="1000"></textarea></div>
+              <div class="field"><label for="setting-welcomeText-ar" data-i18n="settingWelcomeAr">نص ترحيبي (عربي)</label><input id="setting-welcomeText-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-welcomeText-en" data-i18n="settingWelcomeEn">Welcome text (English)</label><input id="setting-welcomeText-en" type="text" dir="ltr" maxlength="250"></div>
+              <div class="field"><label for="setting-browse-ar" data-i18n="settingBrowseAr">نص زر القصص (عربي)</label><input id="setting-browse-ar" type="text" maxlength="100"></div><div class="field"><label for="setting-browse-en" data-i18n="settingBrowseEn">Stories button (English)</label><input id="setting-browse-en" type="text" dir="ltr" maxlength="100"></div>
+              <div class="field"><label for="setting-sectionKicker-ar" data-i18n="settingKickerAr">عبارة قسم القصص (عربي)</label><input id="setting-sectionKicker-ar" type="text" maxlength="150"></div><div class="field"><label for="setting-sectionKicker-en" data-i18n="settingKickerEn">Stories section label (English)</label><input id="setting-sectionKicker-en" type="text" dir="ltr" maxlength="150"></div>
+              <div class="field"><label for="setting-shelfTitle-ar" data-i18n="settingShelfAr">عنوان قسم القصص (عربي)</label><input id="setting-shelfTitle-ar" type="text" maxlength="150"></div><div class="field"><label for="setting-shelfTitle-en" data-i18n="settingShelfEn">Stories section heading (English)</label><input id="setting-shelfTitle-en" type="text" dir="ltr" maxlength="150"></div>
+              <div class="field"><label for="setting-sectionIntro-ar" data-i18n="settingSectionIntroAr">وصف قسم القصص (عربي)</label><textarea id="setting-sectionIntro-ar" maxlength="500"></textarea></div><div class="field"><label for="setting-sectionIntro-en" data-i18n="settingSectionIntroEn">Stories section description (English)</label><textarea id="setting-sectionIntro-en" dir="ltr" maxlength="500"></textarea></div>
+              <div class="field"><label for="setting-aboutTitle-ar" data-i18n="settingAboutTitleAr">عنوان التعريف (عربي)</label><input id="setting-aboutTitle-ar" type="text" maxlength="150"></div><div class="field"><label for="setting-aboutTitle-en" data-i18n="settingAboutTitleEn">About heading (English)</label><input id="setting-aboutTitle-en" type="text" dir="ltr" maxlength="150"></div>
+              <div class="field"><label for="setting-aboutText-ar" data-i18n="settingAboutTextAr">وصف الموقع (عربي)</label><textarea id="setting-aboutText-ar" maxlength="1500"></textarea></div><div class="field"><label for="setting-aboutText-en" data-i18n="settingAboutTextEn">Site description (English)</label><textarea id="setting-aboutText-en" dir="ltr" maxlength="1500"></textarea></div>
+              <div class="field"><label for="setting-footer-ar" data-i18n="settingFooterAr">نص التذييل (عربي)</label><input id="setting-footer-ar" type="text" maxlength="250"></div><div class="field"><label for="setting-footer-en" data-i18n="settingFooterEn">Footer text (English)</label><input id="setting-footer-en" type="text" dir="ltr" maxlength="250"></div>
+            </div>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsQuotes">الاقتباسات</legend><p class="note" data-i18n="quoteNote">أضف اقتباساتك الخاصة، ثم اختر واحدًا لعرضه.</p>
+            <div class="quote-editor">
+              <div class="field"><label for="quote-text-ar" data-i18n="quoteTextAr">الاقتباس (عربي)</label><textarea id="quote-text-ar" maxlength="500"></textarea></div><div class="field"><label for="quote-text-en" data-i18n="quoteTextEn">Quote (English)</label><textarea id="quote-text-en" dir="ltr" maxlength="500"></textarea></div>
+              <div class="field"><label for="quote-author-ar" data-i18n="quoteAuthorAr">صاحب الاقتباس (اختياري)</label><input id="quote-author-ar" type="text" maxlength="100"></div><div class="field"><label for="quote-author-en" data-i18n="quoteAuthorEn">Quote author (optional)</label><input id="quote-author-en" type="text" dir="ltr" maxlength="100"></div>
+              <div class="form-foot"><button class="btn small" id="quote-save" type="button" data-i18n="quoteAdd">إضافة الاقتباس</button><button class="btn small danger" id="quote-cancel" type="button" data-i18n="quoteCancel">إلغاء التعديل</button></div>
+            </div><ul class="manage quote-list" id="quote-list"></ul>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsAppearance">الألوان والخطوط</legend>
+            <div class="settings-colors">
+              <div class="color-control"><label for="setting-color-primary" data-i18n="colorPrimary">اللون الأساسي</label><input id="setting-color-primary" type="color"><output id="value-color-primary"></output></div>
+              <div class="color-control"><label for="setting-color-secondary" data-i18n="colorSecondary">اللون الثانوي</label><input id="setting-color-secondary" type="color"><output id="value-color-secondary"></output></div>
+              <div class="color-control"><label for="setting-color-background" data-i18n="colorBackground">لون الخلفية</label><input id="setting-color-background" type="color"><output id="value-color-background"></output></div>
+              <div class="color-control"><label for="setting-color-text" data-i18n="colorText">لون النص</label><input id="setting-color-text" type="color"><output id="value-color-text"></output></div>
+              <div class="color-control"><label for="setting-color-button" data-i18n="colorButton">لون الأزرار</label><input id="setting-color-button" type="color"><output id="value-color-button"></output></div>
+              <div class="color-control"><label for="setting-color-card" data-i18n="colorCard">لون البطاقات</label><input id="setting-color-card" type="color"><output id="value-color-card"></output></div>
+            </div>
+            <div class="settings-fields"><div class="field"><label for="setting-font" data-i18n="settingFont">نوع الخط</label><select id="setting-font"><option value="cairo" data-i18n="fontCairo">القاهرة / Cairo</option><option value="system" data-i18n="fontSystem">خط النظام</option><option value="serif" data-i18n="fontSerif">خط كلاسيكي</option></select></div>
+              <div class="field"><label for="setting-heading-size" data-i18n="headingSize">حجم العناوين</label><select id="setting-heading-size"><option value="small" data-i18n="sizeSmall">صغير</option><option value="medium" data-i18n="sizeMedium">متوسط</option><option value="large" data-i18n="sizeLarge">كبير</option></select></div>
+              <div class="field"><label for="setting-body-size" data-i18n="bodySize">حجم النصوص</label><select id="setting-body-size"><option value="small" data-i18n="sizeSmall">صغير</option><option value="medium" data-i18n="sizeMedium">متوسط</option><option value="large" data-i18n="sizeLarge">كبير</option></select></div></div>
+          </fieldset>
+          <fieldset class="settings-group"><legend data-i18n="settingsPreview">معاينة مباشرة</legend><div class="settings-preview" id="settings-preview"><strong id="settings-preview-name"></strong><h3 id="settings-preview-title"></h3><p id="settings-preview-copy"></p><button type="button" class="btn small" id="settings-preview-button" data-i18n="browse">تصفّح الكتب</button></div></fieldset>
+          <div class="form-foot"><button class="btn" id="settings-save" type="submit" data-i18n="saveSettings">حفظ الإعدادات</button><button class="btn small danger" id="settings-cancel" type="button" data-i18n="cancelSettings">إلغاء التعديلات</button><p class="status" id="settings-status" role="status" aria-live="polite"></p></div>
+        </form>
+      </section>
       <section class="panel" aria-labelledby="add-title">
         <div class="section-head">
           <h2 id="add-title" data-i18n="addTitle">2. إضافة كتاب جديد</h2>
@@ -138,6 +188,7 @@
 </main>
 
 <script src="i18n.js"></script>
+<script src="site-config.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
@@ -149,6 +200,12 @@
   var armed = null;
   var busy = false;
   var resetArmed = false;
+  var siteSettings = SiteConfig.defaults();
+  var savedSiteSettings = SiteConfig.defaults();
+  var siteSettingsSha = null;
+  var siteSettingsAvailable = false;
+  var settingsBusy = false;
+  var editingQuoteId = null;
 
   function h(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -244,6 +301,7 @@
       say("l-status", "");
       showLock();
       refresh();
+      loadSiteSettings();
     }).catch(function (e) {
       say("l-status", e && e.wrong ? T("eWrong") : T("eOther"), "err");
     }).then(function () { busy = false; $("l-submit").disabled = false; });
@@ -305,6 +363,139 @@
   }
   function textB64(s) { return b64(enc.encode(s)); }
   function b64Text(s) { return dec.decode(unb64(s.replace(/\s/g, ""))); }
+
+  /* ---------- إعدادات الموقع ---------- */
+  var textKeys = ["eyebrow", "heroTitle", "heroSubtitle", "welcomeText", "browse", "sectionKicker", "shelfTitle", "sectionIntro", "aboutTitle", "aboutText", "footer"];
+  var colorKeys = ["primary", "secondary", "background", "text", "button", "card"];
+  function putPair(root, key, language, value) { root[key][language] = value; }
+  function readSettingsForm() {
+    siteSettings.siteName.ar = $("setting-name-ar").value;
+    siteSettings.siteName.en = $("setting-name-en").value;
+    textKeys.forEach(function (key) {
+      putPair(siteSettings.texts, key, "ar", $("setting-" + key + "-ar").value);
+      putPair(siteSettings.texts, key, "en", $("setting-" + key + "-en").value);
+    });
+    colorKeys.forEach(function (key) { siteSettings.theme[key] = $("setting-color-" + key).value; });
+    siteSettings.theme.font = $("setting-font").value;
+    siteSettings.theme.headingSize = $("setting-heading-size").value;
+    siteSettings.theme.bodySize = $("setting-body-size").value;
+    siteSettings = SiteConfig.normalize(siteSettings);
+  }
+  function previewSettings() {
+    readSettingsForm();
+    var preview = $("settings-preview");
+    preview.style.setProperty("--color-primary", siteSettings.theme.primary);
+    preview.style.setProperty("--color-page", siteSettings.theme.background);
+    preview.style.setProperty("--color-ink", siteSettings.theme.text);
+    preview.style.setProperty("--color-button", siteSettings.theme.button);
+    preview.style.setProperty("--color-paper", siteSettings.theme.card);
+    preview.style.setProperty("--font-body", siteSettings.theme.font === "serif" ? 'Georgia, "Times New Roman", Tahoma, serif' : siteSettings.theme.font === "system" ? 'Tahoma, Arial, "Segoe UI", sans-serif' : '"Cairo", "Segoe UI", Tahoma, Arial, sans-serif');
+    preview.style.setProperty("--font-display", siteSettings.theme.font === "serif" ? 'Georgia, "Times New Roman", Tahoma, serif' : siteSettings.theme.font === "system" ? '"Trebuchet MS", Tahoma, Arial, sans-serif' : (I18N.lang === "en" ? '"Fredoka", "Cairo", "Segoe UI", Tahoma, sans-serif' : '"Cairo", "Segoe UI", Tahoma, sans-serif'));
+    preview.style.setProperty("--heading-scale", { small: "0.9", medium: "1", large: "1.12" }[siteSettings.theme.headingSize]);
+    preview.style.setProperty("--body-scale", { small: "0.9", medium: "1", large: "1.1" }[siteSettings.theme.bodySize]);
+    colorKeys.forEach(function (key) { $("value-color-" + key).value = siteSettings.theme[key]; $("value-color-" + key).textContent = siteSettings.theme[key]; });
+    var lang = I18N.lang;
+    $("settings-preview-name").textContent = siteSettings.siteName[lang] || siteSettings.siteName[lang === "en" ? "ar" : "en"];
+    $("settings-preview-title").textContent = siteSettings.texts.heroTitle[lang] || siteSettings.texts.heroTitle[lang === "en" ? "ar" : "en"];
+    $("settings-preview-copy").textContent = T("previewCopy");
+    $("settings-preview-button").style.fontFamily = "var(--font-body)";
+  }
+  function fillSettingsForm(config) {
+    siteSettings = SiteConfig.clone(config);
+    $("setting-name-ar").value = siteSettings.siteName.ar;
+    $("setting-name-en").value = siteSettings.siteName.en;
+    textKeys.forEach(function (key) {
+      $("setting-" + key + "-ar").value = siteSettings.texts[key].ar;
+      $("setting-" + key + "-en").value = siteSettings.texts[key].en;
+    });
+    colorKeys.forEach(function (key) { $("setting-color-" + key).value = siteSettings.theme[key]; });
+    $("setting-font").value = siteSettings.theme.font;
+    $("setting-heading-size").value = siteSettings.theme.headingSize;
+    $("setting-body-size").value = siteSettings.theme.bodySize;
+    renderQuotes(); previewSettings();
+  }
+  function quoteText(quote) { return quote.text[I18N.lang] || quote.text[I18N.lang === "en" ? "ar" : "en"]; }
+  function renderQuotes() {
+    var list = $("quote-list"); list.textContent = "";
+    if (!siteSettings.quotes.length) { list.appendChild(h("li", {}, [h("span", { class: "t", text: T("quoteEmpty") })])); return; }
+    siteSettings.quotes.forEach(function (quote) {
+      var tools = h("span", { class: "quote-tools" });
+      var radio = h("input", { type: "radio", name: "featured-quote", value: quote.id, "aria-label": T("quoteFeature") });
+      radio.checked = siteSettings.featuredQuoteId === quote.id;
+      radio.addEventListener("change", function () { siteSettings.featuredQuoteId = quote.id; previewSettings(); say("settings-status", T("settingsUnsaved")); });
+      tools.appendChild(radio); tools.appendChild(h("span", { text: T("quoteFeature") }));
+      tools.appendChild(h("button", { class: "btn small", type: "button", text: T("quoteEdit"), onclick: function () { editQuote(quote); } }));
+      tools.appendChild(h("button", { class: "btn small danger", type: "button", text: T("quoteDelete"), onclick: function () { deleteQuote(quote); } }));
+      var author = quote.author[I18N.lang] || quote.author[I18N.lang === "en" ? "ar" : "en"];
+      list.appendChild(h("li", {}, [h("span", { class: "quote-copy t" }, [document.createTextNode(quoteText(quote)), author ? h("small", { text: author }) : null]), tools]));
+    });
+  }
+  function resetQuoteEditor() {
+    editingQuoteId = null;
+    $("quote-text-ar").value = ""; $("quote-text-en").value = "";
+    $("quote-author-ar").value = ""; $("quote-author-en").value = "";
+    $("quote-save").textContent = T("quoteAdd");
+  }
+  function editQuote(quote) {
+    editingQuoteId = quote.id;
+    $("quote-text-ar").value = quote.text.ar; $("quote-text-en").value = quote.text.en;
+    $("quote-author-ar").value = quote.author.ar; $("quote-author-en").value = quote.author.en;
+    $("quote-save").textContent = T("quoteUpdate");
+  }
+  function deleteQuote(quote) {
+    siteSettings.quotes = siteSettings.quotes.filter(function (item) { return item.id !== quote.id; });
+    if (siteSettings.featuredQuoteId === quote.id) siteSettings.featuredQuoteId = siteSettings.quotes.length ? siteSettings.quotes[0].id : "";
+    if (editingQuoteId === quote.id) resetQuoteEditor();
+    renderQuotes(); previewSettings(); say("settings-status", T("settingsUnsaved"));
+  }
+  $("quote-save").addEventListener("click", function () {
+    var text = { ar: $("quote-text-ar").value.trim(), en: $("quote-text-en").value.trim() };
+    if (!text.ar && !text.en) { say("settings-status", T("quoteNeedText"), "err"); return; }
+    var quote = { id: editingQuoteId || ("quote-" + Date.now().toString(36)), text: text, author: { ar: $("quote-author-ar").value.trim(), en: $("quote-author-en").value.trim() } };
+    var index = siteSettings.quotes.findIndex(function (item) { return item.id === editingQuoteId; });
+    if (index >= 0) siteSettings.quotes[index] = quote; else siteSettings.quotes.push(quote);
+    if (!siteSettings.featuredQuoteId) siteSettings.featuredQuoteId = quote.id;
+    resetQuoteEditor(); renderQuotes(); previewSettings(); say("settings-status", T("settingsUnsaved"));
+  });
+  $("quote-cancel").addEventListener("click", resetQuoteEditor);
+  $("site-settings-form").addEventListener("input", function (event) {
+    if (event.target.closest(".quote-editor")) return;
+    previewSettings(); say("settings-status", T("settingsUnsaved"));
+  });
+  $("site-settings-form").addEventListener("change", function (event) {
+    if (event.target.closest(".quote-editor")) return;
+    previewSettings(); say("settings-status", T("settingsUnsaved"));
+  });
+  $("site-settings-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    if (!session || !siteSettingsAvailable || settingsBusy || busy) return;
+    readSettingsForm(); settingsBusy = true; $("settings-save").disabled = true; say("settings-status", T("settingsSaving"));
+    var body = { message: "Update site settings", content: textB64(JSON.stringify(siteSettings, null, 2) + "\n"), branch: session.branch };
+    if (siteSettingsSha) body.sha = siteSettingsSha;
+    gh("PUT", "site-config.json", body).then(function (file) {
+      siteSettingsSha = file.content && file.content.sha || siteSettingsSha;
+      savedSiteSettings = SiteConfig.clone(siteSettings);
+      say("settings-status", T("settingsSaveSuccess"), "ok");
+    }).catch(function (error) { say("settings-status", T("settingsSaveFailure") + errText(error), "err"); })
+      .then(function () { settingsBusy = false; $("settings-save").disabled = !siteSettingsAvailable; });
+  });
+  $("settings-cancel").addEventListener("click", function () {
+    if (!siteSettingsAvailable) return;
+    resetQuoteEditor();
+    fillSettingsForm(savedSiteSettings); say("settings-status", T("settingsLoaded"));
+  });
+  function loadSiteSettings() {
+    siteSettingsAvailable = false; $("settings-save").disabled = true; say("settings-status", T("settingsLoading"));
+    gh("GET", "site-config.json").then(function (file) {
+      siteSettingsSha = file.sha; savedSiteSettings = SiteConfig.normalize(JSON.parse(b64Text(file.content)));
+      siteSettingsAvailable = true; fillSettingsForm(savedSiteSettings); say("settings-status", T("settingsLoaded"), "ok");
+    }).catch(function (error) {
+      if (error.status === 404) {
+        siteSettingsSha = null; savedSiteSettings = SiteConfig.defaults(); siteSettingsAvailable = true;
+        fillSettingsForm(savedSiteSettings); say("settings-status", T("settingsNotFound"));
+      } else { fillSettingsForm(SiteConfig.defaults()); say("settings-status", T("settingsLoadError") + errText(error), "err"); }
+    }).then(function () { $("settings-save").disabled = !siteSettingsAvailable; });
+  }
 
   function shrinkCover(file) {
     return new Promise(function (res, rej) {
@@ -446,7 +637,7 @@
     }).then(function () { busy = false; });
   }
 
-  I18N.on(function () { showLock(); renderList(); });
+  I18N.on(function () { showLock(); renderList(); renderQuotes(); previewSettings(); $("quote-save").textContent = T(editingQuoteId ? "quoteUpdate" : "quoteAdd"); });
   showLock();
 })();
 </script>

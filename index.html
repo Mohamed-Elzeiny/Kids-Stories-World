@@ -16,7 +16,7 @@
   <div class="container nav-row">
     <a class="brand" href="index.html" data-i18n-aria="homeLabel" aria-label="الصفحة الرئيسية لمكتبة الحكايات">
       <span class="brand-mark" aria-hidden="true">✿</span>
-      <span data-i18n="siteName">حديقة الحكايات</span>
+      <span data-site-text="siteName">مكتبة الحكايات</span>
     </a>
     <nav class="main-nav" aria-label="Main navigation" data-i18n-aria="navLabel">
       <a href="#stories" data-i18n="navStories">القصص</a>
@@ -31,11 +31,11 @@
   <section class="welcome">
     <div class="container welcome-grid">
       <div class="welcome-copy">
-        <span class="eyebrow"><span aria-hidden="true">✦</span> <span data-i18n="eyebrow">كل حكاية تفتح بابًا لعالم جديد</span></span>
-        <h1><span data-i18n="heroTitleStart">هيا نكتشف</span> <span class="title-accent" data-i18n="heroTitleAccent">حكاية جميلة</span></h1>
-        <p class="lead" data-i18n="lead">مكان صغير مليء بالخيال والضحكات والحكايات التي تنتظر من يقرأها.</p>
-        <a class="btn" href="#stories"><span data-i18n="browse">اكتشف القصص</span><span aria-hidden="true">←</span></a>
-        <div class="welcome-note"><span aria-hidden="true">☀</span> <span data-i18n="welcomeNote">اقرأ، تخيّل، واستمتع!</span></div>
+        <span class="eyebrow"><span aria-hidden="true">✦</span> <span data-site-text="eyebrow">قصص للأطفال بقلم كاتبها</span></span>
+        <h1 data-site-text="heroTitle">هيا نكتشف حكاية جميلة</h1>
+        <p class="lead" data-site-text="heroSubtitle">كتب صغيرة لقلوب كبيرة. اختر حكاية، افتحها واقرأها قبل النوم.</p>
+        <a class="btn" href="#stories"><span data-site-text="browse">تصفّح الكتب</span><span aria-hidden="true">←</span></a>
+        <div class="welcome-note"><span aria-hidden="true">☀</span> <span data-site-text="welcomeText">اقرأ، تخيّل، واستمتع!</span></div>
       </div>
       <div class="welcome-art" aria-hidden="true">
         <div class="art-sun"></div><span class="art-star star-one">✦</span><span class="art-star star-two">✧</span>
@@ -49,8 +49,8 @@
   <section class="library-section" id="stories" aria-labelledby="shelf-title">
     <div class="container">
       <div class="section-heading">
-        <div><span class="section-kicker" data-i18n="sectionKicker">رفّنا الصغير</span><h2 id="shelf-title" data-i18n="shelfTitle">قصص تنتظرنا</h2></div>
-        <p class="section-intro" data-i18n="sectionIntro">اختر حكايتك القادمة من هنا</p>
+        <div><span class="section-kicker" data-site-text="sectionKicker">رفّنا الصغير</span><h2 id="shelf-title" data-site-text="shelfTitle">رفّ الكتب</h2></div>
+        <p class="section-intro" data-site-text="sectionIntro">اختر حكايتك القادمة من هنا</p>
       </div>
       <div class="library-tools">
         <label class="search-box"><span aria-hidden="true">⌕</span><span class="sr-only" data-i18n="searchLabel">ابحث عن قصة بالعنوان</span>
@@ -62,18 +62,25 @@
     </div>
   </section>
 
+  <section class="quote-section" id="quote-section" hidden>
+    <div class="container"><figure class="quote-card"><span class="quote-mark" aria-hidden="true">“</span><blockquote id="featured-quote-text"></blockquote><figcaption id="featured-quote-author" hidden></figcaption></figure></div>
+  </section>
+
   <section class="about-section" id="about">
-    <div class="container about-card"><span class="about-icon" aria-hidden="true">📚</span><div><h2 data-i18n="aboutTitle">مرحبًا بك في حديقة الحكايات</h2><p data-i18n="aboutText">مكتبة بسيطة تجمع القصص المنشورة للصغار. اختر قصة، تعرّف عليها، ثم افتح كتابها لبدء القراءة.</p></div><span class="about-spark" aria-hidden="true">✦</span></div>
+    <div class="container about-card"><span class="about-icon" aria-hidden="true">📚</span><div><h2 data-site-text="aboutTitle">مرحبًا بك في مكتبة الحكايات</h2><p data-site-text="aboutText">مكتبة بسيطة تجمع القصص المنشورة للصغار. اختر قصة، تعرّف عليها، ثم افتح كتابها لبدء القراءة.</p></div><span class="about-spark" aria-hidden="true">✦</span></div>
   </section>
 </main>
 
-<footer class="site-footer"><div class="container footer-row"><span><span aria-hidden="true">✿</span> <span data-i18n="footer">حكاية جميلة قد تجعل يومك أجمل.</span></span><a href="#top" data-i18n="backTop">إلى الأعلى ↑</a></div></footer>
+<footer class="site-footer"><div class="container footer-row"><span><span aria-hidden="true">✿</span> <span data-site-text="footer">حكاية جميلة قد تجعل يومك أجمل.</span></span><a href="#top" data-i18n="backTop">إلى الأعلى ↑</a></div></footer>
 
 <script src="i18n.js"></script>
+<script src="site-config.js"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var books = [], categoryFilter = "all", query = "", state = "loading";
+  var siteConfig = SiteConfig.defaults();
+  function applySiteConfig() { SiteConfig.apply(siteConfig); }
   function node(tag, attrs, children) {
     var el = document.createElement(tag);
     Object.keys(attrs || {}).forEach(function (key) {
@@ -142,7 +149,9 @@
     }
   }
   $("story-search").addEventListener("input", function (event) { query = event.target.value; render(); });
-  I18N.on(render);
+  I18N.on(function () { applySiteConfig(); render(); });
+  applySiteConfig();
+  SiteConfig.load().then(function (settings) { siteConfig = settings; applySiteConfig(); });
   render();
   fetch("books.json?v=" + Date.now()).then(function (response) { if (!response.ok) throw new Error(response.status); return response.json(); }).then(function (data) { books = Array.isArray(data) ? data : []; state = "ready"; render(); }).catch(function () { books = []; state = "error"; render(); });
 })();
