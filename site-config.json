@@ -5,47 +5,47 @@
   },
   "texts": {
     "eyebrow": {
-      "ar": "قصص للأطفال بقلم كاتبها",
-      "en": "Children's stories by their author"
+      "ar": "",
+      "en": ""
     },
     "heroTitle": {
-      "ar": "هيا نكتشف حكاية جميلة",
-      "en": "Let's discover a lovely story"
+      "ar": "الأشياء الصغيرة التي لها قيمة 🌟💫",
+      "en": "The little things that matter 🌟💫"
     },
     "heroSubtitle": {
-      "ar": "كتب صغيرة لقلوب كبيرة. اختر حكاية، افتحها واقرأها قبل النوم.",
-      "en": "Small books for big hearts. Pick a story, open it and read it before bed."
+      "ar": "قصصٌ صغيرة، دروسٌ كبيرة",
+      "en": "Little stories, big lessons."
     },
     "welcomeText": {
-      "ar": "اقرأ، تخيّل، واستمتع!",
-      "en": "Read, imagine and enjoy!"
+      "ar": "مرحباً بكم في عالمنا المليء بالقصص!",
+      "en": "Welcome to our world of stories!"
     },
     "browse": {
-      "ar": "تصفّح الكتب",
-      "en": "Browse books"
+      "ar": "استكشف قصصنا",
+      "en": "Explore our stories"
     },
     "sectionKicker": {
-      "ar": "رفّنا الصغير",
-      "en": "Our little bookshelf"
+      "ar": "ركن القصص لدينا",
+      "en": "Our story corner"
     },
     "shelfTitle": {
-      "ar": "رفّ الكتب",
-      "en": "The Bookshelf"
+      "ar": "",
+      "en": ""
     },
     "sectionIntro": {
-      "ar": "اختر حكايتك القادمة من هنا",
-      "en": "Choose your next story"
+      "ar": "",
+      "en": ""
     },
     "aboutTitle": {
-      "ar": "مرحبًا بك في مكتبة الحكايات",
-      "en": "Welcome to the Story Library"
+      "ar": "",
+      "en": ""
     },
     "aboutText": {
-      "ar": "مكتبة بسيطة تجمع القصص المنشورة للصغار. اختر قصة، تعرّف عليها، ثم افتح كتابها لبدء القراءة.",
-      "en": "A simple library of published stories for children. Choose a story, learn about it, then open its book to start reading."
+      "ar": "مكتبة بسيطة تضم قصصاً منشورة للأطفال. اختر قصة، وتعرَّف على أصدقاء من الحيوانات اللطيفة، وتعلَّم دروساً أخلاقية من خلال كل مغامرة!",
+      "en": "A simple library of published stories for children. Choose a story, meet cute animal friends, learn moral lessons with every adventure!"
     },
     "footer": {
-      "ar": "حكاية جميلة قد تجعل يومك أجمل.",
+      "ar": "يمكن لقصة جميلة أن تجعل يومك أكثر إشراقاً.",
       "en": "A lovely story can make your day brighter."
     }
   },
